@@ -1,6 +1,6 @@
 # Playnite - MAME Utility Extension
 
-![Alt text](logo/mame-utility-extension-banner.png?raw=true "Banner")
+![Alt text](assets/logo/mame-utility-extension-banner.png?raw=true "Banner")
 
 MAME Utility is an extension for Playnite Library (https://playnite.link/) designed to improve MAME games management imported on Playnite. 
 It offers several features that help to organize better your games within the library.
@@ -44,7 +44,7 @@ The only thing to do is to set the path of the MAME executable relating to the v
 For example, if you are using MAME romset 0.235 you have to download the MAME 0.235 application from the site https://www.mamedev.org/.
 After download of MAME application, you have to go on Playnite and set the MAME executable file path under MAME Utility Extension settings section.
 
-![Alt text](screenshots/settings.png?raw=true "Settings")
+![Alt text](assets/screenshots/settings.png?raw=true "Settings")
 
 
 ## How to use
@@ -53,7 +53,7 @@ Select your MAME games on Playnite that you want to rename and then select the o
 
 Original rom name                                                  |  Renamed
 :-----------------------------------------------------------------:|:-------------------------:
-![Alt text](screenshots/imported-raw.png?raw=true "Imported Raw")  |  ![Alt text](screenshots/renamed.png?raw=true "Renamed")
+![Alt text](assets/screenshots/imported-raw.png?raw=true "Imported Raw")  |  ![Alt text](assets/screenshots/renamed.png?raw=true "Renamed")
 
 ### Clean library from non-Games
 Select all your MAME games on Playnite and then select the option `Extensions > MAME Utility > Cleaner > Remove non-Games from selection`.
@@ -62,7 +62,7 @@ In the following example, "neogeo" is not a game but a rom bios, and it will be 
 
 Games and non-Games                                                |  Only Games
 :-----------------------------------------------------------------:|:-------------------------:
-![Alt text](screenshots/renamed.png?raw=true "Non Games")          |![Alt text](screenshots/cleaned-nongames.png?raw=true "Only Games")
+![Alt text](assets/screenshots/renamed.png?raw=true "Non Games")          |![Alt text](assets/screenshots/cleaned-nongames.png?raw=true "Only Games")
 
 ### Clean library from clone Games
 Select all your MAME games on Playnite and then select the option `Extensions > MAME Utility > Cleaner > Remove clone Games from selection`.
@@ -79,7 +79,7 @@ Remember that images must have the same name of the original imported rom.
 
 Games without cover                                                 | Games with cover.
 :------------------------------------------------------------------:|:-------------------------:
-![Alt text](screenshots/without-cover.png?raw=true "Without Cover") |![Alt text](screenshots/with-cover.png?raw=true "With Cover")
+![Alt text](assets/screenshots/without-cover.png?raw=true "Without Cover") |![Alt text](assets/screenshots/with-cover.png?raw=true "With Cover")
 
 ### Set background image for Games
 Select your MAME games and then select the option `Extensions > MAME Utility > Media > Set background image for selected Games`.
@@ -88,7 +88,7 @@ Remember that images must have the same name of the original imported rom.
 
 Games without background                                            | Games with bakcground.
 :------------------------------------------------------------------:|:-------------------------:
-![Alt text](screenshots/without-snap.png?raw=true "Without Snap")   |![Alt text](screenshots/with-snap.png?raw=true "With Snap")
+![Alt text](assets/screenshots/without-snap.png?raw=true "Without Snap")   |![Alt text](assets/screenshots/with-snap.png?raw=true "With Snap")
 
 ### Tag your Games
 Select your MAME games and then select the option `Extensions > MAME Utility > Cataloguer > Tag selected Games`.
@@ -97,7 +97,7 @@ This wiil apply the following tags according to the rom type: *Parent, Clone, Bi
 
 Games without tag                                                   | Games with tag.
 :------------------------------------------------------------------:|:-------------------------:
-![Alt text](screenshots/without-tag.png?raw=true "With Tag")        |![Alt text](screenshots/with-tag.png?raw=true "Without Tag")
+![Alt text](assets/screenshots/without-tag.png?raw=true "With Tag")        |![Alt text](assets/screenshots/with-tag.png?raw=true "Without Tag")
 
 ## License
 
