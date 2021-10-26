@@ -40,12 +40,9 @@ You may come across following problems:
 With MAME Utility extension you can solve all these issues.
 
 ## Configuration
-The only thing to do is to set the path of the MAME executable relating to the version of your romset.
-For example, if you are using MAME romset 0.235 you have to download the MAME 0.235 application from the site https://www.mamedev.org/.
-After download of MAME application, you have to go on Playnite and set the MAME executable file path under MAME Utility Extension settings section.
-
-![Alt text](assets/screenshots/settings.png?raw=true "Settings")
-
+The only thing to do is to set the path of the MAME executable relating to the version of your romset or the xml/dat MAME file list.
+If you choose to use MAME executable you have to download the MAME application (compatible with your romset) from the site https://www.mamedev.org/. After download of MAME application, you have to go on Playnite and set the MAME executable file path under MAME Utility Extension settings section.
+If you choose to load xml/dat MAME file, you have to download or generate it and then set the appropriate path in the settings.
 
 ## How to use
 ### Rename Games using correct name
