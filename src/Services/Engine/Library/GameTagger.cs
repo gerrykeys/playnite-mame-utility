@@ -29,10 +29,10 @@ namespace MAMEUtility.Services.Engine.Library
         {
             bool isOperationCanceled = false;
             // Get MAME machines
-            Dictionary<string, MAMEMachine> mameMachines = MachineService.getMachines(ref isOperationCanceled);
+            Dictionary<string, MAMEMachine> mameMachines = MAMEMachineService.getMachines(ref isOperationCanceled);
             if (isOperationCanceled) return;
             if (mameMachines == null) {
-                UI.UIService.showError("No machine founds", "Cannot get Gamelist from MAME executable");
+                UI.UIService.showError("No machine founds", "Cannot get Machines from selected MAME type source. Please check extension settings.");
                 return;
             }
 

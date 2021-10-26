@@ -18,16 +18,11 @@ namespace MAMEUtility.Services.Engine
         {
             try
             {
-                // Clean cache
-                Cache.DataCache.mameMachines = new Dictionary<string, MAMEMachine>();
-
                 // Generate MAME gamelist XML
                 XmlDocument mameGamelistXML = generateGamelistXML(mameExecutable);
 
-                // Parse machines and store to cache
-                Cache.DataCache.mameMachines = MachineParser.parseMachines(mameGamelistXML);
+                return MachineParser.parseMachines(mameGamelistXML);
             
-                return Cache.DataCache.mameMachines;
             }
             catch (System.Exception){}
 

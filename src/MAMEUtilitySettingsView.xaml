@@ -8,23 +8,53 @@
 
     <StackPanel Orientation="Vertical">
 
-        <!-- /////////////////////////////////// -->
-        <!-- // MAME Executable Path             -->
-        <!-- /////////////////////////////////// -->
-        <Border Padding="10">
-            <StackPanel Orientation="Vertical">
-                <TextBlock 
-                    Text="MAME executable (.exe)" 
-                    Foreground="White" 
-                    FontWeight="Bold"/>
-                <TextBox
-                    x:Name="MameExecutable_TextBox"
-                    TextWrapping="Wrap" 
-                    Margin="0,10,0,0" 
-                    Text="{Binding Settings.MameExecutableFilePath}" />
-                <Button Content="Select MAME Executable" Width="Auto" Margin="0,10,0,0" Click="Button_SelectMameExecutable"/>
+
+        <GroupBox Header="MAME romset information source" Margin="15">
+
+            <StackPanel Margin="10">
+                <Label FontWeight="Bold">Select MAME romset information type source</Label>
+                <RadioButton 
+                    x:Name="RadioButton_UseMameExecutable"
+                    Margin="5" 
+                    IsChecked="{Binding Settings.UseMameExecutable}" 
+                    Checked="RadioButton_UseMameExecutable_Checked">
+                        Use MAME executable (.exe)
+                </RadioButton>
+                <RadioButton
+                    x:Name="RadioButton_UseMameFile"
+                    Margin="5" 
+                    IsChecked="{Binding Settings.UseMameListFile}" 
+                    Checked="RadioButton_UseMameFile_Checked">
+                        Use MAME list file (.xml|.dat)
+                </RadioButton>
+
+                <StackPanel 
+                        Orientation="Vertical" 
+                        Margin="0 0 0 0"    
+                        IsEnabled="{Binding ElementName=RadioButton_UseMameExecutable, Path=IsChecked}">
+                        <TextBox
+                            x:Name="MameExecutable_TextBox"
+                            TextWrapping="Wrap" 
+                            Margin="0,10,0,0" 
+                            Text="{Binding Settings.MameExecutableFilePath}" />
+                        <Button Content="Select MAME Executable" Width="Auto" Margin="0,10,0,0" Click="Button_SelectMameExecutable"/>
+                </StackPanel>
+
+                <StackPanel 
+                        Orientation="Vertical" 
+                        Margin="0 10 0 0"
+                        IsEnabled="{Binding ElementName=RadioButton_UseMameFile, Path=IsChecked}">
+                        <TextBox
+                            x:Name="GamelistXML_TextBox"
+                            TextWrapping="Wrap" 
+                            Margin="0,10,0,0" 
+                            Text="{Binding Settings.MameListFilePath}" />
+                        <Button Content="Select MAME Gamelist XML file" Width="Auto" Margin="0,10,0,0" Click="Button_SelectMameGamelistXmlFilePath"/>
+                </StackPanel>
+                
             </StackPanel>
-        </Border>
+        
+        </GroupBox>
 
     </StackPanel>
 

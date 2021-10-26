@@ -11,7 +11,19 @@ namespace MAMEUtility
     public class MAMEUtilitySettings : ObservableObject
     {
         //////////////////////////////////////////
-        // MAME executable path
+        //// MAME Source executable
+        //////////////////////////////////////////
+        private bool _useMameExecutablePath = true;
+        public bool UseMameExecutable
+        {
+            get => _useMameExecutablePath;
+            set
+            {
+                _useMameExecutablePath = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string _mameExecutableFilePath;
         public string MameExecutableFilePath
         {
@@ -25,6 +37,30 @@ namespace MAMEUtility
 
 
 
+        //////////////////////////////////////////
+        //// MAME Source file
+        //////////////////////////////////////////
+        private bool _useGamelistXmlPath = false;
+        public bool UseMameListFile
+        {
+            get => _useGamelistXmlPath;
+            set
+            {
+                _useGamelistXmlPath = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _mameGamelistXmlFilePath;
+        public string MameListFilePath
+        {
+            get => _mameGamelistXmlFilePath;
+            set
+            {
+                _mameGamelistXmlFilePath = value;
+                OnPropertyChanged();
+            }
+        }
 
 
         // Playnite serializes settings object to a JSON object and saves it as text file.

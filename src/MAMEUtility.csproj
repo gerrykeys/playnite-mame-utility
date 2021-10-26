@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\Playnite\Extensions\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -62,10 +62,11 @@
     <Compile Include="Services\Engine\Library\GameCleaner.cs" />
     <Compile Include="Services\Engine\Library\GameRenamer.cs" />
     <Compile Include="Services\Engine\Library\GameTagger.cs" />
-    <Compile Include="Services\Engine\MAME\private\MachineParser.cs" />
+    <Compile Include="Services\Engine\MAME\private\MAMEMachineParser.cs" />
     <Compile Include="Services\Engine\MAME\private\MAMECliExecutor.cs" />
-    <Compile Include="Services\Engine\MAME\MachineService.cs" />
+    <Compile Include="Services\Engine\MAME\MAMEMachineService.cs" />
     <Compile Include="Services\Engine\Library\GameMediaManager.cs" />
+    <Compile Include="Services\Engine\MAME\private\MAMEMachinesFileLoader.cs" />
     <Compile Include="Services\UI\UIService.cs" />
   </ItemGroup>
   <ItemGroup>
