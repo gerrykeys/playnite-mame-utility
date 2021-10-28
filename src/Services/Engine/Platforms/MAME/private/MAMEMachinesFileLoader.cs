@@ -11,7 +11,7 @@ namespace MAMEUtility.Services.Engine.MAME
     class MAMEMachinesFileLoader
     {
         ////////////////////////////////////////////
-        public static Dictionary<string, MAMEMachine> getMachinesFromListFile(string mameFileListPath)
+        public static Dictionary<string, RomsetMachine> getMachinesFromListFile(string mameFileListPath)
         {
             try
             {
@@ -20,7 +20,7 @@ namespace MAMEUtility.Services.Engine.MAME
                 mameMachineslistXML.Load(mameFileListPath);
 
                 // Parse machines
-                return MachineParser.parseMachines(mameMachineslistXML);
+                return MAMEMachineParser.parseMachines(mameMachineslistXML);
 
             }
             catch (System.Exception) { }

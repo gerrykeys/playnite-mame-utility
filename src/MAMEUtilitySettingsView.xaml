@@ -21,11 +21,11 @@
                         Use MAME executable (.exe)
                 </RadioButton>
                 <RadioButton
-                    x:Name="RadioButton_UseMameFile"
+                    x:Name="RadioButton_UseSourceListFile"
                     Margin="5" 
-                    IsChecked="{Binding Settings.UseMameListFile}" 
-                    Checked="RadioButton_UseMameFile_Checked">
-                        Use MAME list file (.xml|.dat)
+                    IsChecked="{Binding Settings.UseSourceListFile}" 
+                    Checked="RadioButton_UseSourceListFile_Checked">
+                        Use list file (.xml|.dat)
                 </RadioButton>
 
                 <StackPanel 
@@ -43,13 +43,17 @@
                 <StackPanel 
                         Orientation="Vertical" 
                         Margin="0 10 0 0"
-                        IsEnabled="{Binding ElementName=RadioButton_UseMameFile, Path=IsChecked}">
-                        <TextBox
+                        IsEnabled="{Binding ElementName=RadioButton_UseSourceListFile, Path=IsChecked}">
+                    <ComboBox
+                        ItemsSource="{Binding Path=Settings.SourceFileListTypes}"
+                        SelectedItem="{Binding Path=Settings.SelectedSourceFileListType}"
+                        />
+                    <TextBox
                             x:Name="GamelistXML_TextBox"
                             TextWrapping="Wrap" 
                             Margin="0,10,0,0" 
-                            Text="{Binding Settings.MameListFilePath}" />
-                        <Button Content="Select MAME Gamelist XML file" Width="Auto" Margin="0,10,0,0" Click="Button_SelectMameGamelistXmlFilePath"/>
+                            Text="{Binding Settings.SourceListFilePath}" />
+                        <Button Content="Select XML/DAT file" Width="Auto" Margin="0,10,0,0" Click="Button_SelectSourceListFilePath"/>
                 </StackPanel>
                 
             </StackPanel>

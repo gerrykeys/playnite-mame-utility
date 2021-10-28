@@ -1,4 +1,5 @@
 ﻿using MAMEUtility.Models;
+using MAMEUtility.Services.Engine.Platforms;
 using Playnite.SDK;
 using System;
 using System.Collections.Generic;
@@ -9,42 +10,61 @@ using System.Windows.Forms;
 
 namespace MAMEUtility.Services.Engine.MAME
 {
-    class MAMEMachineService
+    class MAMEMachinesService
     {
         ////////////////////////////////////////////////////////////////////////////////
-        public static Dictionary<string, MAMEMachine> getMachines(ref bool isOperationCanceled)
+        public static MachinesResponseData getMachines()
         {
+            MachinesResponseData responseData = new MachinesResponseData();
+
             // Case of no cached data
-            if(Cache.DataCache.mameMachines.Count == 0)
+            if (Cache.DataCache.mameMachines.Count == 0)
             {
                 // Generate MAME machines
-                return (Cache.DataCache.mameMachines.Count == 0) ? generateMachines() : getMachinesFromCache();
+                responseData.machines = generateMachines();
+                return responseData;
             }
 
             // Case of cached data: Ask to user if wants to use cached data or regenerate MAME machines
             DialogResult dlgResult = UI.UIService.openAskDialog("", "MAME machines was previously generated. Do you want to use cached data? If no, then a rescan will be launched");
-            if (dlgResult == DialogResult.Cancel) { isOperationCanceled = true; return null; }
-            if (dlgResult == DialogResult.Yes) return Cache.DataCache.mameMachines;
-            
-            return generateMachines();
+            if (dlgResult == DialogResult.Cancel) {
+                responseData.isOperationCancelled = true;
+                return responseData;
+            }
+            if (dlgResult == DialogResult.Yes) {
+               responseData.machines = Cache.DataCache.mameMachines;
+                return responseData;
+            }
+
+            responseData.machines = generateMachines();
+            return responseData;
         }
 
         ////////////////////////////////////////////////////////////////////////////////
-        private static Dictionary<string, MAMEMachine> generateMachines()
+        private static Dictionary<string, RomsetMachine> generateMachines()
         {
-            var settings = MAMEUtilityPlugin.settings.Settings;
+            try
+            {
+                var settings = MAMEUtilityPlugin.settings.Settings;
 
-            // generate mame machines
-            Dictionary<string, MAMEMachine> mameMachines =  (settings.UseMameExecutable) ? getMachinesFromMameExecutable(settings.MameExecutableFilePath) : getMachinesFromMameListFile(settings.MameListFilePath);
+                // generate mame machines
+                Dictionary<string, RomsetMachine> mameMachines = (settings.UseMameExecutable) ? getMachinesFromMameExecutable(settings.MameExecutableFilePath) : getMachinesFromMameListFile(settings.SourceListFilePath);
 
-            // update cache
-            Cache.DataCache.mameMachines = mameMachines;
+                // update cache
+                Cache.DataCache.mameMachines = mameMachines;
 
-            return mameMachines;
+                return mameMachines;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return null;
         }
 
         ////////////////////////////////////////////////////////////////////////////////
-        private static Dictionary<string, MAMEMachine> getMachinesFromMameExecutable(string mameExecutablePath)
+        private static Dictionary<string, RomsetMachine> getMachinesFromMameExecutable(string mameExecutablePath)
         {
             if (string.IsNullOrEmpty(mameExecutablePath))
             {
@@ -53,7 +73,7 @@ namespace MAMEUtility.Services.Engine.MAME
             }
 
             // Get gamelist from MAME executable
-            Dictionary<string, MAMEMachine> mameMachines = new Dictionary<string, MAMEMachine>();
+            Dictionary<string, RomsetMachine> mameMachines = new Dictionary<string, RomsetMachine>();
             GlobalProgressResult progressResult = UI.UIService.showProgress("Generating Gamelist data from MAME executable", false, true, (progressAction) => {
                 mameMachines = MAMECliExecutor.getMachinesFromMameExecutable(mameExecutablePath);
             });
@@ -62,7 +82,7 @@ namespace MAMEUtility.Services.Engine.MAME
         }
 
         ////////////////////////////////////////////////////////////////////////////////
-        private static Dictionary<string, MAMEMachine> getMachinesFromMameListFile(string mameListFilePath)
+        private static Dictionary<string, RomsetMachine> getMachinesFromMameListFile(string mameListFilePath)
         {
             if (string.IsNullOrEmpty(mameListFilePath))
             {
@@ -71,7 +91,7 @@ namespace MAMEUtility.Services.Engine.MAME
             }
 
             // Get gamelist from MAME executable
-            Dictionary<string, MAMEMachine> mameMachines = new Dictionary<string, MAMEMachine>();
+            Dictionary<string, RomsetMachine> mameMachines = new Dictionary<string, RomsetMachine>();
             GlobalProgressResult progressResult = UI.UIService.showProgress("Generating Gamelist data from MAME executable", false, true, (progressAction) => {
                 mameMachines = MAMEMachinesFileLoader.getMachinesFromListFile(mameListFilePath);
             });
@@ -80,7 +100,7 @@ namespace MAMEUtility.Services.Engine.MAME
         }
 
         ////////////////////////////////////////////////////////////////////////////////
-        private static Dictionary<string, MAMEMachine> getMachinesFromCache()
+        private static Dictionary<string, RomsetMachine> getMachinesFromCache()
         {
             return Cache.DataCache.mameMachines;
         }

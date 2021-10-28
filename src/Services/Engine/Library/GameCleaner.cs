@@ -1,6 +1,7 @@
 ﻿using MAMEUtility.Models;
 using MAMEUtility.Services.Cache;
 using MAMEUtility.Services.Engine.MAME;
+using MAMEUtility.Services.Engine.Platforms;
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using System.Collections.Generic;
@@ -12,12 +13,12 @@ namespace MAMEUtility.Services.Engine
         //////////////////////////////////////////////////
         public static void removeSelectedNonGames()
         {
-            // Get MAME machines
-            bool isOperationCanceled = false;
-            Dictionary<string, MAMEMachine> mameMachines = MAMEMachineService.getMachines(ref isOperationCanceled);
-            if (isOperationCanceled) return;
-            if (mameMachines == null) {
-                UI.UIService.showError("No machine founds", "Cannot get Machines from selected MAME type source. Please check extension settings.");
+            // Get machines
+            MachinesResponseData responseData = MAMEMachinesService.getMachines();
+            if (responseData.isOperationCancelled) return;
+            if (responseData.machines == null)
+            {
+                UI.UIService.showError("No machine founds", "Cannot get Machines. Please check extension settings.");
                 return;
             }
 
@@ -29,7 +30,7 @@ namespace MAMEUtility.Services.Engine
                 IEnumerable<Game> selectedGames = MAMEUtilityPlugin.playniteAPI.MainView.SelectedGames;
                 foreach (Game game in selectedGames)
                 {
-                    MAMEMachine mameMachine = DataCache.findMachineByPlayniteGame(game);
+                    RomsetMachine mameMachine = MachinesService.findMachineByPlayniteGame(responseData.machines, game);
                     if(mameMachine != null && !mameMachine.isGame())
                     {
                         removeGame(game);
@@ -46,12 +47,12 @@ namespace MAMEUtility.Services.Engine
         //////////////////////////////////////////////////
         public static void removeSelectedCloneGames()
         {
-            // Get MAME machines
-            bool isOperationCanceled = false;
-            Dictionary<string, MAMEMachine> mameMachines = MAMEMachineService.getMachines(ref isOperationCanceled);
-            if (isOperationCanceled) return;
-            if (mameMachines == null) {
-                UI.UIService.showError("No machine founds", "Cannot get Machines from selected MAME type source. Please check extension settings.");
+            // Get machines
+            MachinesResponseData responseData = MAMEMachinesService.getMachines();
+            if (responseData.isOperationCancelled) return;
+            if (responseData.machines == null)
+            {
+                UI.UIService.showError("No machine founds", "Cannot get Machines. Please check extension settings.");
                 return;
             }
 
@@ -63,7 +64,7 @@ namespace MAMEUtility.Services.Engine
                 IEnumerable<Game> selectedGames = MAMEUtilityPlugin.playniteAPI.MainView.SelectedGames;
                 foreach (Game game in selectedGames)
                 {
-                    MAMEMachine mameMachine = DataCache.findMachineByPlayniteGame(game);
+                    RomsetMachine mameMachine = MachinesService.findMachineByPlayniteGame(responseData.machines, game);
                     if (mameMachine != null && mameMachine.isClone())
                     {
                         removeGame(game);
@@ -79,12 +80,12 @@ namespace MAMEUtility.Services.Engine
         //////////////////////////////////////////////////
         public static void removeSelectedMechanicalGames()
         {
-            // Get MAME machines
-            bool isOperationCanceled = false;
-            Dictionary<string, MAMEMachine> mameMachines = MAMEMachineService.getMachines(ref isOperationCanceled);
-            if (isOperationCanceled) return;
-            if (mameMachines == null) {
-                UI.UIService.showError("No machine founds", "Cannot get Machines from selected MAME type source. Please check extension settings.");
+            // Get machines
+            MachinesResponseData responseData = MAMEMachinesService.getMachines();
+            if (responseData.isOperationCancelled) return;
+            if (responseData.machines == null)
+            {
+                UI.UIService.showError("No machine founds", "Cannot get Machines. Please check extension settings.");
                 return;
             }
 
@@ -96,7 +97,7 @@ namespace MAMEUtility.Services.Engine
                 IEnumerable<Game> selectedGames = MAMEUtilityPlugin.playniteAPI.MainView.SelectedGames;
                 foreach (Game game in selectedGames)
                 {
-                    MAMEMachine mameMachine = DataCache.findMachineByPlayniteGame(game);
+                    RomsetMachine mameMachine = MachinesService.findMachineByPlayniteGame(responseData.machines, game);
                     if (mameMachine != null && mameMachine.isMechanical)
                     {
                         removeGame(game);

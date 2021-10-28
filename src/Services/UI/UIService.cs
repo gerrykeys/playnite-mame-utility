@@ -34,9 +34,9 @@ namespace MAMEUtility.Services.UI
         }
 
         //////////////////////////////////////////////////////////////////
-        public static string openFileDialogChooser(string extensionFiletrType)
+        public static string openFileDialogChooser(string extensionFiltersType)
         {
-            return MAMEUtilityPlugin.playniteAPI.Dialogs.SelectFile(extensionFiletrType);
+            return MAMEUtilityPlugin.playniteAPI.Dialogs.SelectFile(extensionFiltersType);
             /*OpenFileDialog openFileDialog = new OpenFileDialog();
     
             openFileDialog.InitialDirectory = "c:\\";

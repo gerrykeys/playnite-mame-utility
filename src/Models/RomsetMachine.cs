@@ -7,7 +7,7 @@ using System.Xml;
 
 namespace MAMEUtility.Models
 {
-    class MAMEMachine
+    class RomsetMachine
     {
         public string romName;
         public string description;

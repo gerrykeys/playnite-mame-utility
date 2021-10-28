@@ -5,11 +5,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace MAMEUtility
 {
     public class MAMEUtilitySettings : ObservableObject
     {
+        ////////////////////////////////
+        public MAMEUtilitySettings()
+        {
+            SourceFileListTypes = new[] { "MAME", "FBNeo" };
+        }
+
         //////////////////////////////////////////
         //// MAME Source executable
         //////////////////////////////////////////
@@ -38,26 +45,41 @@ namespace MAMEUtility
 
 
         //////////////////////////////////////////
-        //// MAME Source file
+        //// XML/DATA Source file
         //////////////////////////////////////////
-        private bool _useGamelistXmlPath = false;
-        public bool UseMameListFile
+        private bool _useSourcelistFilePath = false;
+        public bool UseSourceListFile
         {
-            get => _useGamelistXmlPath;
+            get => _useSourcelistFilePath;
             set
             {
-                _useGamelistXmlPath = value;
+                _useSourcelistFilePath = value;
                 OnPropertyChanged();
             }
         }
+        
+        
+        public IEnumerable<string> SourceFileListTypes { get; private set; }
 
-        private string _mameGamelistXmlFilePath;
-        public string MameListFilePath
+        private string _selectedSourceFileListType;
+        public string SelectedSourceFileListType
         {
-            get => _mameGamelistXmlFilePath;
+            get => !string.IsNullOrEmpty(_selectedSourceFileListType) ? _selectedSourceFileListType : "MAME";
             set
             {
-                _mameGamelistXmlFilePath = value;
+                _selectedSourceFileListType = value;
+                OnPropertyChanged("SelectedCarModel");
+            }
+        }
+
+
+        private string _sourceListFilePath;
+        public string SourceListFilePath
+        {
+            get => _sourceListFilePath;
+            set
+            {
+                _sourceListFilePath = value;
                 OnPropertyChanged();
             }
         }

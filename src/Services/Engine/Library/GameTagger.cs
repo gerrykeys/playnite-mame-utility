@@ -1,6 +1,7 @@
 ﻿using MAMEUtility.Models;
 using MAMEUtility.Services.Cache;
 using MAMEUtility.Services.Engine.MAME;
+using MAMEUtility.Services.Engine.Platforms;
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using System;
@@ -27,12 +28,12 @@ namespace MAMEUtility.Services.Engine.Library
         ////////////////////////////////////////////////////////////////////
         public static void setTagOfSelectedGames()
         {
-            bool isOperationCanceled = false;
-            // Get MAME machines
-            Dictionary<string, MAMEMachine> mameMachines = MAMEMachineService.getMachines(ref isOperationCanceled);
-            if (isOperationCanceled) return;
-            if (mameMachines == null) {
-                UI.UIService.showError("No machine founds", "Cannot get Machines from selected MAME type source. Please check extension settings.");
+            // Get machines
+            MachinesResponseData responseData = MAMEMachinesService.getMachines();
+            if (responseData.isOperationCancelled) return;
+            if (responseData.machines == null)
+            {
+                UI.UIService.showError("No machine founds", "Cannot get Machines. Please check extension settings.");
                 return;
             }
 
@@ -46,7 +47,7 @@ namespace MAMEUtility.Services.Engine.Library
                 // Rename only game machines
                 foreach (Game game in selectedGames)
                 {
-                    MAMEMachine mameMachine = DataCache.findMachineByPlayniteGame(game);
+                    RomsetMachine mameMachine = MachinesService.findMachineByPlayniteGame(responseData.machines, game);
                     if (mameMachine != null)
                     {
                         tagGame(game, mameMachine);
@@ -60,7 +61,7 @@ namespace MAMEUtility.Services.Engine.Library
         }
 
         //////////////////////////////////////////////////
-        private static void tagGame(Game playniteGame, MAMEMachine mameMachine)
+        private static void tagGame(Game playniteGame, RomsetMachine mameMachine)
         {
             List<string> tagsToSet = new List<string>();
 

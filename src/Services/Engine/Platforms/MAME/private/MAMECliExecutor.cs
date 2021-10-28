@@ -14,14 +14,14 @@ namespace MAMEUtility.Services.Engine
     class MAMECliExecutor
     {
         ////////////////////////////////////////////////////////////////////////
-        public static Dictionary<string, MAMEMachine> getMachinesFromMameExecutable(string mameExecutable)
+        public static Dictionary<string, RomsetMachine> getMachinesFromMameExecutable(string mameExecutable)
         {
             try
             {
                 // Generate MAME gamelist XML
                 XmlDocument mameGamelistXML = generateGamelistXML(mameExecutable);
 
-                return MachineParser.parseMachines(mameGamelistXML);
+                return MAMEMachineParser.parseMachines(mameGamelistXML);
             
             }
             catch (System.Exception){}

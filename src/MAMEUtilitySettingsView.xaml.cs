@@ -50,15 +50,15 @@ namespace MAMEUtility
             }
         }
 
-        private void Button_SelectMameGamelistXmlFilePath(object sender, RoutedEventArgs e)
+        private void Button_SelectSourceListFilePath(object sender, RoutedEventArgs e)
         {
             if (this.plugin == null) return;
             
-            string mameListFilePath = Services.UI.UIService.openFileDialogChooser("Gamelist XMl (*.xml)|*.xml");
+            string mameListFilePath = Services.UI.UIService.openFileDialogChooser("Source list XML (*.xml)|*.xml|Source list DAT (*.dat)|*.dat");
             if (!string.IsNullOrEmpty(mameListFilePath))
             {
                 MAMEUtilitySettingsViewModel settings = getSettings();
-                settings.Settings.MameListFilePath = mameListFilePath;
+                settings.Settings.SourceListFilePath = mameListFilePath;
 
             }
         }
@@ -68,15 +68,15 @@ namespace MAMEUtility
             if (this.plugin == null) return;
             
             getSettings().Settings.UseMameExecutable = true;
-            getSettings().Settings.UseMameListFile    = false;
+            getSettings().Settings.UseSourceListFile    = false;
         }
 
-        private void RadioButton_UseMameFile_Checked(object sender, RoutedEventArgs e)
+        private void RadioButton_UseSourceListFile_Checked(object sender, RoutedEventArgs e)
         {
             if (this.plugin == null) return;
             
             getSettings().Settings.UseMameExecutable = false;
-            getSettings().Settings.UseMameListFile    = true;
+            getSettings().Settings.UseSourceListFile    = true;
         }
     }
 }

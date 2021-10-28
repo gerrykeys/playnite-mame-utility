@@ -10,18 +10,6 @@ namespace MAMEUtility.Services.Cache
 {
     class DataCache
     {
-        public static Dictionary<string, MAMEMachine> mameMachines = new Dictionary<string, MAMEMachine>();
-
-        //////////////////////////////////////////////////////
-        public static MAMEMachine findMachineByPlayniteGame(Game playniteGame)
-        {
-            if (mameMachines.ContainsKey(playniteGame.Name)) 
-                return mameMachines[playniteGame.Name];
-
-            if (playniteGame.Roms.Count == 1 && mameMachines.ContainsKey(playniteGame.Roms[0].Name))
-                return mameMachines[playniteGame.Roms[0].Name];
-
-            return null;
-        }
+        public static Dictionary<string, RomsetMachine> mameMachines = new Dictionary<string, RomsetMachine>();
     }
 }
