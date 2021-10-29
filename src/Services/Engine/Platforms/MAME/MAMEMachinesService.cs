@@ -16,26 +16,6 @@ namespace MAMEUtility.Services.Engine.MAME
         public static MachinesResponseData getMachines()
         {
             MachinesResponseData responseData = new MachinesResponseData();
-
-            // Case of no cached data
-            if (Cache.DataCache.mameMachines.Count == 0)
-            {
-                // Generate MAME machines
-                responseData.machines = generateMachines();
-                return responseData;
-            }
-
-            // Case of cached data: Ask to user if wants to use cached data or regenerate MAME machines
-            DialogResult dlgResult = UI.UIService.openAskDialog("", "MAME machines was previously generated. Do you want to use cached data? If no, then a rescan will be launched");
-            if (dlgResult == DialogResult.Cancel) {
-                responseData.isOperationCancelled = true;
-                return responseData;
-            }
-            if (dlgResult == DialogResult.Yes) {
-               responseData.machines = Cache.DataCache.mameMachines;
-                return responseData;
-            }
-
             responseData.machines = generateMachines();
             return responseData;
         }
@@ -46,18 +26,10 @@ namespace MAMEUtility.Services.Engine.MAME
             try
             {
                 var settings = MAMEUtilityPlugin.settings.Settings;
-
-                // generate mame machines
-                Dictionary<string, RomsetMachine> mameMachines = (settings.UseMameExecutable) ? getMachinesFromMameExecutable(settings.MameExecutableFilePath) : getMachinesFromMameListFile(settings.SourceListFilePath);
-
-                // update cache
-                Cache.DataCache.mameMachines = mameMachines;
-
-                return mameMachines;
+                return (settings.UseMameExecutable) ? getMachinesFromMameExecutable(settings.MameExecutableFilePath) :  getMachinesFromMameListFile(settings.SourceListFilePath);
             }
             catch (Exception ex)
             {
-                throw;
             }
 
             return null;
@@ -74,7 +46,7 @@ namespace MAMEUtility.Services.Engine.MAME
 
             // Get gamelist from MAME executable
             Dictionary<string, RomsetMachine> mameMachines = new Dictionary<string, RomsetMachine>();
-            GlobalProgressResult progressResult = UI.UIService.showProgress("Generating Gamelist data from MAME executable", false, true, (progressAction) => {
+            GlobalProgressResult progressResult = UI.UIService.showProgress("Generating Romset data from MAME executable", false, true, (progressAction) => {
                 mameMachines = MAMECliExecutor.getMachinesFromMameExecutable(mameExecutablePath);
             });
 
@@ -92,17 +64,11 @@ namespace MAMEUtility.Services.Engine.MAME
 
             // Get gamelist from MAME executable
             Dictionary<string, RomsetMachine> mameMachines = new Dictionary<string, RomsetMachine>();
-            GlobalProgressResult progressResult = UI.UIService.showProgress("Generating Gamelist data from MAME executable", false, true, (progressAction) => {
+            GlobalProgressResult progressResult = UI.UIService.showProgress("Generating Romset data from MAME source file", false, true, (progressAction) => {
                 mameMachines = MAMEMachinesFileLoader.getMachinesFromListFile(mameListFilePath);
             });
 
             return mameMachines;
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////
-        private static Dictionary<string, RomsetMachine> getMachinesFromCache()
-        {
-            return Cache.DataCache.mameMachines;
         }
     }
 }

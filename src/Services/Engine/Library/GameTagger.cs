@@ -29,7 +29,8 @@ namespace MAMEUtility.Services.Engine.Library
         public static void setTagOfSelectedGames()
         {
             // Get machines
-            MachinesResponseData responseData = MAMEMachinesService.getMachines();
+            string sourceListFileType = MAMEUtilityPlugin.settings.Settings.SelectedSourceFileListType;
+            MachinesResponseData responseData = MachinesService.getMachines(sourceListFileType);
             if (responseData.isOperationCancelled) return;
             if (responseData.machines == null)
             {

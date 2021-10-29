@@ -37,21 +37,12 @@ namespace MAMEUtility.Services.UI
         public static string openFileDialogChooser(string extensionFiltersType)
         {
             return MAMEUtilityPlugin.playniteAPI.Dialogs.SelectFile(extensionFiltersType);
-            /*OpenFileDialog openFileDialog = new OpenFileDialog();
-    
-            openFileDialog.InitialDirectory = "c:\\";
-            openFileDialog.Filter = extensionFiletrType + " files (*." + extensionFiletrType + ")|*." + extensionFiletrType;
-            openFileDialog.RestoreDirectory = true;
-            return (openFileDialog.ShowDialog() == DialogResult.OK) ? openFileDialog.FileName : null;*/
         }
 
         //////////////////////////////////////////////////////////////////
         public static string openDirectoryDialogChooser()
         {
             return MAMEUtilityPlugin.playniteAPI.Dialogs.SelectFolder();
-            /*FolderBrowserDialog fbd = new FolderBrowserDialog();
-            DialogResult result = fbd.ShowDialog();
-            return (result == DialogResult.OK) ? fbd.SelectedPath : "";*/
         }
     }
 }

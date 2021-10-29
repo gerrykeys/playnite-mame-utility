@@ -18,7 +18,7 @@ namespace MAMEUtility
         }
 
         //////////////////////////////////////////
-        //// MAME Source executable
+        //// Use MAME Source executable path
         //////////////////////////////////////////
         private bool _useMameExecutablePath = true;
         public bool UseMameExecutable
@@ -31,6 +31,9 @@ namespace MAMEUtility
             }
         }
 
+        //////////////////////////////////////////
+        //// MAME Source executable path
+        //////////////////////////////////////////
         private string _mameExecutableFilePath;
         public string MameExecutableFilePath
         {
@@ -42,10 +45,8 @@ namespace MAMEUtility
             }
         }
 
-
-
         //////////////////////////////////////////
-        //// XML/DATA Source file
+        //// USE XML/DAT Source file
         //////////////////////////////////////////
         private bool _useSourcelistFilePath = false;
         public bool UseSourceListFile
@@ -57,10 +58,11 @@ namespace MAMEUtility
                 OnPropertyChanged();
             }
         }
-        
-        
-        public IEnumerable<string> SourceFileListTypes { get; private set; }
 
+        //////////////////////////////////////////
+        //// Source List File Type
+        //////////////////////////////////////////
+        public IEnumerable<string> SourceFileListTypes { get; private set; }
         private string _selectedSourceFileListType;
         public string SelectedSourceFileListType
         {
@@ -68,11 +70,13 @@ namespace MAMEUtility
             set
             {
                 _selectedSourceFileListType = value;
-                OnPropertyChanged("SelectedCarModel");
+                OnPropertyChanged();
             }
         }
 
-
+        //////////////////////////////////////////
+        //// Source list file path
+        //////////////////////////////////////////
         private string _sourceListFilePath;
         public string SourceListFilePath
         {

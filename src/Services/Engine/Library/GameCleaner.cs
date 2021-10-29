@@ -14,7 +14,8 @@ namespace MAMEUtility.Services.Engine
         public static void removeSelectedNonGames()
         {
             // Get machines
-            MachinesResponseData responseData = MAMEMachinesService.getMachines();
+            string sourceListFileType = MAMEUtilityPlugin.settings.Settings.SelectedSourceFileListType;
+            MachinesResponseData responseData = MachinesService.getMachines(sourceListFileType);
             if (responseData.isOperationCancelled) return;
             if (responseData.machines == null)
             {
@@ -48,7 +49,8 @@ namespace MAMEUtility.Services.Engine
         public static void removeSelectedCloneGames()
         {
             // Get machines
-            MachinesResponseData responseData = MAMEMachinesService.getMachines();
+            string sourceListFileType = MAMEUtilityPlugin.settings.Settings.SelectedSourceFileListType;
+            MachinesResponseData responseData = MachinesService.getMachines(sourceListFileType);
             if (responseData.isOperationCancelled) return;
             if (responseData.machines == null)
             {
@@ -81,7 +83,8 @@ namespace MAMEUtility.Services.Engine
         public static void removeSelectedMechanicalGames()
         {
             // Get machines
-            MachinesResponseData responseData = MAMEMachinesService.getMachines();
+            string sourceListFileType = MAMEUtilityPlugin.settings.Settings.SelectedSourceFileListType;
+            MachinesResponseData responseData = MachinesService.getMachines(sourceListFileType);
             if (responseData.isOperationCancelled) return;
             if (responseData.machines == null)
             {
