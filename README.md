@@ -11,13 +11,17 @@ If you like the extension and it has been useful to you, you can buy me a beer :
 
 ## Features
 
-- Rename your imported MAME roms using the correct name 
+- Rename your imported Romset using the correct name 
 - Remove from library all non-games (*bios/device/sample roms*)
 - Remove from library all clone games
 - Remove from library all mechanical games
 - Tag your games by following tags: *Parent, Clone, Bios, Device, Sample, Mechanical*
 
 > **_NOTE:_**  The extension does not modify or remove in any way your original imported roms. 
+
+## Supported platform (for getting romset information)
+- MAME
+- FBNeo
 
 ## Compatibility
 - MAME Utility Extension can be installed on Playnite 9 or higher
