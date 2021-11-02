@@ -29,7 +29,7 @@ namespace MAMEUtility.Services.Engine
                 fileListMap.Add(fileName, fpath);
             }
 
-            // Rename all selected Playnite games
+            // Apply images for all selected Playnite games
             int processedGames = 0;
             int coverApplyed   = 0;
             GlobalProgressResult progressResult = UI.UIService.showProgress("Applying cover images to selection", false, true, (progressAction) => {
@@ -47,6 +47,13 @@ namespace MAMEUtility.Services.Engine
                     {
                         try
                         {
+                            // if game has a cover image, then remove it
+                            if(game.CoverImage != null)
+                            {
+                                MAMEUtilityPlugin.playniteAPI.Database.RemoveFile(game.CoverImage);
+                            }
+
+                            // Add cover image
                             Guid guid       = Guid.NewGuid();
                             string filepath = fileListMap[game.Roms[0].Name];
                             string id       = MAMEUtilityPlugin.playniteAPI.Database.AddFile(filepath, guid);
@@ -81,7 +88,7 @@ namespace MAMEUtility.Services.Engine
                 fileListMap.Add(fileName, fpath);
             }
 
-            // Rename all selected Playnite games
+            // Apply background image for all selected Playnite games
             int processedGames    = 0;
             int backgroundApplyed = 0;
             GlobalProgressResult progressResult = UI.UIService.showProgress("Applying background images to selection", false, true, (progressAction) => {
@@ -98,6 +105,13 @@ namespace MAMEUtility.Services.Engine
                     {
                         try
                         {
+                            // if game has a cover image, then remove it
+                            if(game.BackgroundImage != null)
+                            {
+                                MAMEUtilityPlugin.playniteAPI.Database.RemoveFile(game.BackgroundImage);
+                            }
+
+                            // Add background image
                             Guid guid = Guid.NewGuid();
                             string filepath = fileListMap[game.Roms[0].Name];
                             string id = MAMEUtilityPlugin.playniteAPI.Database.AddFile(filepath, guid);
