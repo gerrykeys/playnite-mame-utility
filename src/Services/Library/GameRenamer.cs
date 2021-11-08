@@ -17,8 +17,7 @@ namespace MAMEUtility.Services.Engine
         public static void renameSelectedGames()
         {
             // Get machines
-            string sourceListFileType = MAMEUtilityPlugin.settings.Settings.SelectedSourceFileListType;
-            MachinesResponseData responseData = MachinesService.getMachines(sourceListFileType);
+            MachinesResponseData responseData = MachinesService.getMachines();
             if (responseData.isOperationCancelled) return;
             if(responseData.machines == null) {
                 UI.UIService.showError("No machine founds", "Cannot get Machines. Please check extension settings.");

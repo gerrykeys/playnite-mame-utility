@@ -1,9 +1,5 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 
 namespace MAMEUtility.Models
 {
@@ -17,10 +13,18 @@ namespace MAMEUtility.Models
         public bool isDevice;
         public bool isMechanical;
 
+        public List<string> clones = new List<string>();
+
         ////////////////////////////////////////////////////////////
         public bool isGame()
         {
             return (isBios || isDevice || isSample()) ? false : true;
+        }
+
+        ////////////////////////////////////////////////////////////
+        public bool isParent()
+        {
+            return (string.IsNullOrEmpty(cloneOf)) ? true : false;
         }
 
         ////////////////////////////////////////////////////////////

@@ -15,7 +15,7 @@ namespace MAMEUtility.Services.Engine
         {
             // Get machines
             string sourceListFileType = MAMEUtilityPlugin.settings.Settings.SelectedSourceFileListType;
-            MachinesResponseData responseData = MachinesService.getMachines(sourceListFileType);
+            MachinesResponseData responseData = MachinesService.getMachines();
             if (responseData.isOperationCancelled) return;
             if (responseData.machines == null)
             {
@@ -50,7 +50,7 @@ namespace MAMEUtility.Services.Engine
         {
             // Get machines
             string sourceListFileType = MAMEUtilityPlugin.settings.Settings.SelectedSourceFileListType;
-            MachinesResponseData responseData = MachinesService.getMachines(sourceListFileType);
+            MachinesResponseData responseData = MachinesService.getMachines();
             if (responseData.isOperationCancelled) return;
             if (responseData.machines == null)
             {
@@ -84,7 +84,7 @@ namespace MAMEUtility.Services.Engine
         {
             // Get machines
             string sourceListFileType = MAMEUtilityPlugin.settings.Settings.SelectedSourceFileListType;
-            MachinesResponseData responseData = MachinesService.getMachines(sourceListFileType);
+            MachinesResponseData responseData = MachinesService.getMachines();
             if (responseData.isOperationCancelled) return;
             if (responseData.machines == null)
             {

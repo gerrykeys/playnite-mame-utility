@@ -12,7 +12,10 @@ using System.Windows.Forms;
 namespace MAMEUtility.Services.Engine.Platforms
 {
     //////////////////////////////////////////////////////////////
-    public enum MachineType { MAME, FBNeo }
+    public enum SourceType { MAMEExecutable, DATFile }
+
+    //////////////////////////////////////////////////////////////
+    public enum MachineType { Unknow, MAME, FBNeo }
 
     //////////////////////////////////////////////////////////////
     class MachinesResponseData
@@ -36,17 +39,36 @@ namespace MAMEUtility.Services.Engine.Platforms
             return MachineType.MAME;
         }
 
-        //////////////////////////////////
-        public static MachinesResponseData getMachines(string sourceListFileType)
+        //////////////////////////////////////////////////////////////
+        public static SourceType getSourceType()
         {
-            MachinesResponseData responseData = new MachinesResponseData();
+            return (MAMEUtilityPlugin.settings.Settings.UseMameExecutable) ? SourceType.MAMEExecutable : SourceType.DATFile;
+        }
 
-            // Get machine type
-            MachineType machineType = getMachineTypeFromString(sourceListFileType);
+        //////////////////////////////////////////////////////////////
+        public static MachinesResponseData getMachines()
+        {
+            // get source type
+            SourceType sourceType = getSourceType();
+
+            MachinesResponseData responseData = new MachinesResponseData();
+            MachineType machineType = MachineType.Unknow;
 
             // Case of no cached data
             if (Cache.DataCache.mameMachines.Count == 0)
             {
+                // Case of MAME Executable
+                if (sourceType == SourceType.MAMEExecutable)
+                {
+                    machineType = MachineType.MAME;
+                }
+
+                // Case of DAT
+                else
+                {
+                    machineType =  getMachineTypeFromString(MAMEUtilityPlugin.settings.Settings.SelectedSourceFileListType);
+                }
+
                 // get machines
                 responseData = getMachines(machineType);
 
@@ -81,11 +103,19 @@ namespace MAMEUtility.Services.Engine.Platforms
         }
 
         //////////////////////////////////
-        public static MachinesResponseData getMachines(MachineType machineType)
+        private static MachinesResponseData getMachines(MachineType machineType)
         {
-            if (machineType == MachineType.MAME) return MAMEMachinesService.getMachines();
-            if (machineType == MachineType.FBNeo) return FBNeoMachinesService.getMachines();
-            return null;
+            MachinesResponseData responseData;
+
+            // Get machines by machine type
+            if (machineType == MachineType.MAME) responseData = MAMEMachinesService.getMachines();
+            else if (machineType == MachineType.FBNeo) responseData = FBNeoMachinesService.getMachines();
+            else return null;
+
+            // Link parent/clones
+            linkParentClones(responseData.machines);
+
+            return responseData;
         }
 
         //////////////////////////////////////////////////////
@@ -98,6 +128,21 @@ namespace MAMEUtility.Services.Engine.Platforms
                 return mameMachines[playniteGame.Roms[0].Name];
 
             return null;
+        }
+
+        //////////////////////////////////////////////////////
+        private static void linkParentClones(Dictionary<string, RomsetMachine> machinesMap)
+        {
+            foreach (KeyValuePair<string, RomsetMachine> entry in machinesMap)
+            {
+                RomsetMachine machine = entry.Value;
+                if(machine.isClone())
+                {
+                    string parent = machine.cloneOf;
+                    string clone  = entry.Key;
+                    machinesMap[parent].clones.AddMissing<string>(clone);
+                }
+            }
         }
     }
 }

@@ -22,13 +22,13 @@ namespace MAMEUtility.Configuration
                 {
                     MenuSection = "@" + MAMEUtilityPlugin.PluginName + "|Media",
                     Description = "Set cover images of selected Games",
-                    Action = (args) => GameMediaManager.setCoverImagesOfSelectedGames()
+                    Action = (args) => GameMediaManager.setImageOfSelectedGames(GameMediaManager.ImageType.Cover)
                 },
                 new MainMenuItem
                 {
                     MenuSection = "@" + MAMEUtilityPlugin.PluginName + "|Media",
                     Description = "Set background images of selected Games",
-                    Action = (args) => GameMediaManager.setBackgroundImagesOfSelectedGames()
+                    Action = (args) => GameMediaManager.setImageOfSelectedGames(GameMediaManager.ImageType.Background)
                 },
                 new MainMenuItem
                 {
