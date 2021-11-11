@@ -8,11 +8,14 @@ using Playnite.SDK.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace MAMEUtility.Services.Engine
 {
     class GameRenamer
     {
+        private static readonly Regex cleaner = new Regex(@" *\([^)]*\) *", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         //////////////////////////////////////////////////
         public static void renameSelectedGames(Boolean extraInfo)
         {
@@ -57,12 +60,7 @@ namespace MAMEUtility.Services.Engine
                 playniteGame.Name = mameMachine.description;
             }
             else {
-                try {
-                    playniteGame.Name = mameMachine.description.Remove(mameMachine.description.LastIndexOf("(") - 1);
-                }
-                catch (Exception) {
-                    playniteGame.Name = mameMachine.description;
-                }
+                playniteGame.Name = cleaner.Replace(mameMachine.description, "");
             }
             
             MAMEUtilityPlugin.playniteAPI.Database.Games.Update(playniteGame);
