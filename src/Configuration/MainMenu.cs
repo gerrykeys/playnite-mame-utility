@@ -16,7 +16,13 @@ namespace MAMEUtility.Configuration
                 {
                     MenuSection = "@" + MAMEUtilityPlugin.PluginName,
                     Description = "Rename Selected Games",
-                    Action = (args) => GameRenamer.renameSelectedGames()
+                    Action = (args) => GameRenamer.renameSelectedGames(true)
+                },
+                new MainMenuItem
+                {
+                    MenuSection = "@" + MAMEUtilityPlugin.PluginName,
+                    Description = "Rename Selected Games (Without Extra Information in Name)",
+                    Action = (args) => GameRenamer.renameSelectedGames(false)
                 },
                 new MainMenuItem
                 {

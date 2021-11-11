@@ -8,18 +8,21 @@ using Playnite.SDK.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace MAMEUtility.Services.Engine
 {
     class GameRenamer
     {
+        private static readonly Regex cleaner = new Regex(@" *\([^)]*\) *", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         //////////////////////////////////////////////////
-        public static void renameSelectedGames()
+        public static void renameSelectedGames(Boolean extraInfo)
         {
             // Get machines
             MachinesResponseData responseData = MachinesService.getMachines();
             if (responseData.isOperationCancelled) return;
-            if(responseData.machines == null) {
+            if (responseData.machines == null) {
                 UI.UIService.showError("No machine founds", "Cannot get Machines. Please check extension settings.");
                 return;
             }
@@ -38,7 +41,7 @@ namespace MAMEUtility.Services.Engine
                     RomsetMachine mameMachine = MachinesService.findMachineByPlayniteGame(responseData.machines, game);
                     if (mameMachine != null && mameMachine.isGame())
                     {
-                        renameGame(game, mameMachine);
+                        renameGame(game, mameMachine, extraInfo);
                         renamedCount++;
                     }
 
@@ -51,9 +54,15 @@ namespace MAMEUtility.Services.Engine
         }
 
         //////////////////////////////////////////////////
-        private static bool renameGame(Game playniteGame, RomsetMachine mameMachine)
+        private static bool renameGame(Game playniteGame, RomsetMachine mameMachine, Boolean extraInfo)
         {
-            playniteGame.Name = mameMachine.description;
+            if (extraInfo) {
+                playniteGame.Name = mameMachine.description;
+            }
+            else {
+                playniteGame.Name = cleaner.Replace(mameMachine.description, "");
+            }
+            
             MAMEUtilityPlugin.playniteAPI.Database.Games.Update(playniteGame);
             return true;
         }
