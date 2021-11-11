@@ -57,7 +57,12 @@ namespace MAMEUtility.Services.Engine
                 playniteGame.Name = mameMachine.description;
             }
             else {
-                playniteGame.Name = mameMachine.description.Remove(mameMachine.description.LastIndexOf("(") - 1);
+                try {
+                    playniteGame.Name = mameMachine.description.Remove(mameMachine.description.LastIndexOf("(") - 1);
+                }
+                catch (Exception) {
+                    playniteGame.Name = mameMachine.description;
+                }
             }
             
             MAMEUtilityPlugin.playniteAPI.Database.Games.Update(playniteGame);
