@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -30,6 +31,9 @@ namespace MAMEUtility.Services.Engine.Platforms
     //////////////////////////////////////////////////////////////
     class MachinesService
     {
+        //////////////////////////////////////////////////////////////
+        private static readonly Regex extensionCleaner = new Regex(@"\.[^.]*$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         //////////////////////////////////////////////////////////////
         public static MachineType getMachineTypeFromString(string type)
         {
@@ -124,8 +128,16 @@ namespace MAMEUtility.Services.Engine.Platforms
             if (mameMachines.ContainsKey(playniteGame.Name))
                 return mameMachines[playniteGame.Name];
 
-            if (playniteGame.Roms.Count == 1 && mameMachines.ContainsKey(playniteGame.Roms[0].Name))
-                return mameMachines[playniteGame.Roms[0].Name];
+            if (playniteGame.Roms.Count == 1)
+            {
+                string path = playniteGame.Roms[0].Path;
+                string nameCleaned = path.Substring(path.LastIndexOf("\\") + 1);
+
+                nameCleaned = extensionCleaner.Replace(nameCleaned, "");
+
+                if (mameMachines.ContainsKey(nameCleaned))
+                    return mameMachines[nameCleaned];
+            }
 
             return null;
         }
