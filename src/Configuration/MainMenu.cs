@@ -38,6 +38,12 @@ namespace MAMEUtility.Configuration
                 },
                 new MainMenuItem
                 {
+                    MenuSection = "@" + MAMEUtilityPlugin.PluginName + "|Media",
+                    Description = "Set icons of selected Games",
+                    Action = (args) => GameMediaManager.setImageOfSelectedGames(GameMediaManager.ImageType.Icon)
+                },
+                new MainMenuItem
+                {
                     MenuSection = "@" + MAMEUtilityPlugin.PluginName + "|Cataloguer",
                     Description = "Tag selected games",
                     Action = (args) => GameTagger.setTagOfSelectedGames()

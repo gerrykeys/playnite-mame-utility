@@ -11,7 +11,7 @@ namespace MAMEUtility.Services.Engine
     class GameMediaManager
     {
         ////////////////////////////////////////////////////
-        public enum ImageType { Cover, Background }
+        public enum ImageType { Cover, Background, Icon }
 
         ////////////////////////////////////////////////////
         private static Dictionary<string, string> imageFileListMap = new Dictionary<string, string>();
@@ -139,17 +139,19 @@ namespace MAMEUtility.Services.Engine
         private static void setGameImage(ImageType imageType, Game game, string imageFilePath)
         {
             // If game has just the image then remove it
-            if(imageType == ImageType.Cover && game.CoverImage != null) MAMEUtilityPlugin.playniteAPI.Database.RemoveFile(game.CoverImage);
+            if (imageType == ImageType.Cover && game.CoverImage != null) MAMEUtilityPlugin.playniteAPI.Database.RemoveFile(game.CoverImage);
             if (imageType == ImageType.Background && game.BackgroundImage != null) MAMEUtilityPlugin.playniteAPI.Database.RemoveFile(game.BackgroundImage);
+            if (imageType == ImageType.Icon && game.Icon != null) MAMEUtilityPlugin.playniteAPI.Database.RemoveFile(game.Icon);
 
             // add image to playnite database
             Guid guid = Guid.NewGuid();
             string id = MAMEUtilityPlugin.playniteAPI.Database.AddFile(imageFilePath, guid);
-            
+
             // assign image to game
-            if (imageType == ImageType.Cover) game.CoverImage = id;
+            if      (imageType == ImageType.Cover) game.CoverImage = id;
             else if (imageType == ImageType.Background) game.BackgroundImage = id;
-            
+            else if (imageType == ImageType.Icon) game.Icon = id;
+
             // update game
             MAMEUtilityPlugin.playniteAPI.Database.Games.Update(game);
         }

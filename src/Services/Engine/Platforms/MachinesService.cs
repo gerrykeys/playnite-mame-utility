@@ -116,6 +116,9 @@ namespace MAMEUtility.Services.Engine.Platforms
             else if (machineType == MachineType.FBNeo) responseData = FBNeoMachinesService.getMachines();
             else return null;
 
+            // sanity check
+            if (responseData.machines == null) return responseData;
+
             // Link parent/clones
             linkParentClones(responseData.machines);
 
