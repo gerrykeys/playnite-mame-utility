@@ -16,6 +16,7 @@ If you like the extension and it has been useful to you, you can buy me a beer :
 - Remove from library all clone games
 - Remove from library all mechanical games
 - Tag your games by following tags: *Parent, Clone, Bios, Device, Sample, Mechanical*
+- Add Cover / Screenshot / Icons images
 
 > **_NOTE:_**  The extension does not modify or remove in any way your original imported roms. 
 
