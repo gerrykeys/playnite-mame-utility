@@ -1,0 +1,1 @@
+"C:\Users\gerrykeys\workspace\playnite-mame-utility\test\Playnite\Toolbox.exe" pack "C:\Users\gerrykeys\workspace\playnite-mame-utility\src\bin\Release" "C:\Users\gerrykeys\workspace\playnite-mame-utility\pipeline-scripts"

@@ -3,3 +3,6 @@ src/.vs/MAMEUtility/v16/.suo
 src/obj/*
 src/bin/*
 src/MAMEUtility.csproj.user
+test/
+*.vsidx
+*.suo

@@ -35,12 +35,34 @@ namespace MAMEUtility.Services.Engine.Platforms.FBNeo
 
             RomsetMachine machine = new RomsetMachine();
 
+            // name
             if (machineXmlNode.Attributes["name"] != null) machine.romName = machineXmlNode.Attributes["name"].Value;
-            if (machineXmlNode.FirstChild != null) machine.description = machineXmlNode.FirstChild.InnerText;
+
+            // description
+            XmlNodeList childNodes = machineXmlNode.ChildNodes;
+            machine.description = "";
+            foreach (XmlNode childNode in childNodes)
+            {
+                if(childNode.Name == "description")
+                {
+                    machine.description = childNode.InnerText;
+                    break;
+                }
+            }
+            
+            // clone of
             if (machineXmlNode.Attributes["cloneof"] != null) machine.cloneOf = machineXmlNode.Attributes["cloneof"].Value;
+            
+            // sample of
             if (machineXmlNode.Attributes["sampleof"] != null) machine.sampleof = machineXmlNode.Attributes["sampleof"].Value;
+            
+            // is bios
             if (machineXmlNode.Attributes["isbios"] != null) machine.isBios = getBoolFromYesNo(machineXmlNode.Attributes["isbios"].Value);
+            
+            // is device
             if (machineXmlNode.Attributes["isdevice"] != null) machine.isDevice = getBoolFromYesNo(machineXmlNode.Attributes["isdevice"].Value);
+            
+            // is mechanical
             if (machineXmlNode.Attributes["ismechanical"] != null) machine.isMechanical = getBoolFromYesNo(machineXmlNode.Attributes["ismechanical"].Value);
 
             return machine;
