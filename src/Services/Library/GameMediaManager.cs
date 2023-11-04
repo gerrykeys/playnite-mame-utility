@@ -5,6 +5,8 @@ using Playnite.SDK.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Mime;
+using System.Text.RegularExpressions;
 
 namespace MAMEUtility.Services.Engine
 {
@@ -14,7 +16,133 @@ namespace MAMEUtility.Services.Engine
         public enum ImageType { Cover, Background, Icon }
 
         ////////////////////////////////////////////////////
+        public enum ExtraMetaDataType { Logo, Video, MicroVideo }
+
+        ////////////////////////////////////////////////////
+        private const string longPathPrefix = @"\\?\";
+
+        ////////////////////////////////////////////////////
+        private const string longPathUncPrefix = @"\\?\UNC\";
+
+        ////////////////////////////////////////////////////
         private static Dictionary<string, string> imageFileListMap = new Dictionary<string, string>();
+        
+        ////////////////////////////////////////////////////        
+        private static bool IsFullPath(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                return false;
+            }
+
+            // Don't use Path.IsPathRooted because it fails on paths starting with one backslash.
+            return Regex.IsMatch(path, @"^([a-zA-Z]:\\|\\\\)");
+        }
+
+        ////////////////////////////////////////////////////
+        private static string FixPathLength(string path)
+        {
+            // Relative paths don't support long paths
+            // https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=cmd
+            if (!IsFullPath(path))
+            {
+                return path;
+            }
+
+            if (path.Length >= 258 && !path.StartsWith(longPathPrefix))
+            {
+                if (path.StartsWith(@"\\"))
+                {
+                    return longPathUncPrefix + path.Substring(2);
+                }
+                else
+                {
+                    return longPathPrefix + path;
+                }
+            }
+
+            return path;
+        }
+
+        ////////////////////////////////////////////////////
+        private static string GetExtraMetadataDirectory(Game game, bool createDirectory = false)
+        {
+            var directory = Path.Combine(FixPathLength(Path.Combine(MAMEUtilityPlugin.playniteAPI.Paths.ConfigurationPath, "ExtraMetadata")), 
+                "games", game.Id.ToString());
+            if (createDirectory && !Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+            return directory;
+        }
+
+        ////////////////////////////////////////////////////
+        private static string GetGameLogoPath(Game game, bool createDirectory = false)
+        {
+            return Path.Combine(GetExtraMetadataDirectory(game, createDirectory), "Logo.png");
+        }
+
+        ////////////////////////////////////////////////////
+        private static string GetGameVideoPath(Game game, bool createDirectory = false)
+        {
+            return Path.Combine(GetExtraMetadataDirectory(game, createDirectory), "VideoTrailer.mp4");
+        }
+
+        ////////////////////////////////////////////////////
+        private static string GetGameVideoMicroPath(Game game, bool createDirectory = false)
+        {
+            return Path.Combine(GetExtraMetadataDirectory(game, createDirectory), "VideoMicrotrailer.mp4");
+        }
+
+        ////////////////////////////////////////////////////
+        public static void setExtraMetaDataOfSelectedGames(ExtraMetaDataType mediaType)
+        {
+            // Get machines
+            MachinesResponseData responseData = MachinesService.getMachines();
+            if (responseData.isOperationCancelled) return;
+            if (responseData.machines == null)
+            {
+                UI.UIService.showError("No machine founds", "Cannot get Machines. Please check extension settings.");
+                return;
+            }
+
+            // Load file images
+            loadFileImages();
+
+            // Apply images for all selected Playnite games
+            int imagesApplied = 0;
+            GlobalProgressResult progressResult = UI.UIService.showProgress("Applying extrametadata videos to selection", false, true, (progressAction) => {
+
+                // Get selected games
+                IEnumerable<Game> selectedGames = MAMEUtilityPlugin.playniteAPI.MainView.SelectedGames;
+
+                // Apply images for each game
+                foreach (Game game in selectedGames)
+                {
+                    // find an image for the game
+                    string imageFilePath = findImage(game);
+
+                    // if image is found then set to game
+                    if (!string.IsNullOrEmpty(imageFilePath))
+                    {
+                        setGameExtraMetaData(mediaType, game, imageFilePath);
+                        imagesApplied++;
+                    }
+                }
+            });
+            switch (mediaType)
+            {
+                case ExtraMetaDataType.Logo:
+                    UI.UIService.showMessage(imagesApplied + " logos were set");
+                    break;
+
+                case ExtraMetaDataType.MicroVideo:
+                case ExtraMetaDataType.Video:
+                    UI.UIService.showMessage(imagesApplied + " videos were set");
+                    break;
+            }
+            
+        }
 
         ////////////////////////////////////////////////////
         public static void setImageOfSelectedGames(ImageType imageType)
@@ -154,6 +282,29 @@ namespace MAMEUtility.Services.Engine
 
             // update game
             MAMEUtilityPlugin.playniteAPI.Database.Games.Update(game);
+        }
+
+        ////////////////////////////////////////////////////
+        private static void setGameExtraMetaData(ExtraMetaDataType mediaType, Game game, string mediaFilePath)
+        {
+            try
+            {
+                switch (mediaType)
+                {
+                    case ExtraMetaDataType.Logo:
+                        File.Copy(mediaFilePath, GetGameLogoPath(game, true));
+                        break;
+                    case ExtraMetaDataType.MicroVideo:
+                        File.Copy(mediaFilePath, GetGameVideoMicroPath(game, true));
+                        break;
+                    case ExtraMetaDataType.Video:
+                        File.Copy(mediaFilePath, GetGameVideoPath(game, true));
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+            }
         }
     }
 }

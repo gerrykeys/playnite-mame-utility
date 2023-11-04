@@ -44,6 +44,24 @@ namespace MAMEUtility.Configuration
                 },
                 new MainMenuItem
                 {
+                    MenuSection = "@" + MAMEUtilityPlugin.PluginName + "|Media",
+                    Description = "Set (extrametadata) videos of selected Games",
+                    Action = (args) => GameMediaManager.setExtraMetaDataOfSelectedGames(GameMediaManager.ExtraMetaDataType.Video)
+                },
+                new MainMenuItem
+                {
+                    MenuSection = "@" + MAMEUtilityPlugin.PluginName + "|Media",
+                    Description = "Set (extrametadata) micro videos of selected Games",
+                    Action = (args) => GameMediaManager.setExtraMetaDataOfSelectedGames(GameMediaManager.ExtraMetaDataType.MicroVideo)
+                },
+                new MainMenuItem
+                {
+                    MenuSection = "@" + MAMEUtilityPlugin.PluginName + "|Media",
+                    Description = "Set (extrametadata) logo of selected Games",
+                    Action = (args) => GameMediaManager.setExtraMetaDataOfSelectedGames(GameMediaManager.ExtraMetaDataType.Logo)
+                },
+                new MainMenuItem
+                {
                     MenuSection = "@" + MAMEUtilityPlugin.PluginName + "|Cataloguer",
                     Description = "Tag selected games",
                     Action = (args) => GameTagger.setTagOfSelectedGames()
