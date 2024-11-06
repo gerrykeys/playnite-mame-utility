@@ -10,6 +10,6 @@ namespace MAMEUtility.Services.Cache
 {
     class DataCache
     {
-        public static Dictionary<string, RomsetMachine> mameMachines = new Dictionary<string, RomsetMachine>();
+        public static Dictionary<string, RomsetMachine> machines = new Dictionary<string, RomsetMachine>();
     }
 }

@@ -29,12 +29,11 @@ namespace MAMEUtility.Services.Engine.Library
         public static void setTagOfSelectedGames()
         {
             // Get machines
-            string sourceListFileType = MAMEUtilityPlugin.settings.Settings.SelectedSourceFileListType;
-            MachinesResponseData responseData = MachinesService.getMachines();
-            if (responseData.isOperationCancelled) return;
-            if (responseData.machines == null)
+            string sourceListFileType = MAMEUtilityPlugin.settings.Settings.SelectedRomsetSourceFormat;
+            Dictionary<string, RomsetMachine> machines = MachinesService.getMachines();
+            if (machines == null)
             {
-                UI.UIService.showError("No machine founds", "Cannot get Machines. Please check extension settings.");
+                UI.UIService.showError("No machine found", "Cannot get Machines. Please check plugin settings.");
                 return;
             }
 
@@ -48,7 +47,7 @@ namespace MAMEUtility.Services.Engine.Library
                 // Rename only game machines
                 foreach (Game game in selectedGames)
                 {
-                    RomsetMachine mameMachine = MachinesService.findMachineByPlayniteGame(responseData.machines, game);
+                    RomsetMachine mameMachine = MachinesService.findMachineByPlayniteGame(machines, game);
                     if (mameMachine != null)
                     {
                         tagGame(game, mameMachine);

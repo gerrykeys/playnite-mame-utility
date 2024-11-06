@@ -5,6 +5,7 @@ using Playnite.SDK.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -13,20 +14,10 @@ using System.Windows.Forms;
 namespace MAMEUtility.Services.Engine.Platforms
 {
     //////////////////////////////////////////////////////////////
-    public enum SourceType { MAMEExecutable, DATFile }
+    public enum SourceType { Unknow, MAMEExecutable, DATFile }
 
     //////////////////////////////////////////////////////////////
-    public enum MachineType { Unknow, MAME, FBNeo }
-
-    //////////////////////////////////////////////////////////////
-    class MachinesResponseData
-    {
-        public MachinesResponseData() { }
-
-        public Dictionary<string, RomsetMachine> machines;
-        public bool isOperationCancelled;
-        public bool isOperationError;
-    }
+    public enum SourceFormat { Unknow, MAME, FBNeo }
 
     //////////////////////////////////////////////////////////////
     class MachinesService
@@ -35,94 +26,89 @@ namespace MAMEUtility.Services.Engine.Platforms
         private static readonly Regex extensionCleaner = new Regex(@"\.[^.]*$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         //////////////////////////////////////////////////////////////
-        public static MachineType getMachineTypeFromString(string type)
-        {
-            if (type == "MAME") return MachineType.MAME;
-            if (type == "FBNeo") return MachineType.FBNeo;
-
-            return MachineType.MAME;
-        }
-
-        //////////////////////////////////////////////////////////////
         public static SourceType getSourceType()
         {
             return (MAMEUtilityPlugin.settings.Settings.UseMameExecutable) ? SourceType.MAMEExecutable : SourceType.DATFile;
         }
 
         //////////////////////////////////////////////////////////////
-        public static MachinesResponseData getMachines()
+        public static SourceFormat getSourceFormatByString(string str)
         {
-            // get source type
+            if (str == "MAME") return SourceFormat.MAME;
+            if (str == "FBNeo") return SourceFormat.FBNeo;
+            return SourceFormat.Unknow;
+        }
+
+        //////////////////////////////////////////////////////////////
+        public static SourceFormat getSourceFormat()
+        {
             SourceType sourceType = getSourceType();
-
-            MachinesResponseData responseData = new MachinesResponseData();
-            MachineType machineType = MachineType.Unknow;
-
-            // Case of no cached data
-            if (Cache.DataCache.mameMachines.Count == 0)
+            SourceFormat sourceFormat = SourceFormat.Unknow;
+            if (sourceType == SourceType.MAMEExecutable)
             {
-                // Case of MAME Executable
-                if (sourceType == SourceType.MAMEExecutable)
+                sourceFormat = SourceFormat.MAME;
+            }
+            else
+            {
+                sourceFormat = getSourceFormatByString(MAMEUtilityPlugin.settings.Settings.SelectedRomsetSourceFormat);
+            }
+            return sourceFormat;
+        }
+
+
+        //////////////////////////////////////////////////////////////
+        public static Dictionary<string, RomsetMachine> getMachines()
+        {
+            // Get source type
+            SourceType sourceType = getSourceType();
+            if (sourceType == SourceType.Unknow)
+                return null;
+
+            // Get format type
+            SourceFormat sourceFormat = getSourceFormat();
+            if (sourceFormat == SourceFormat.Unknow)
+                return null;
+
+            // If cache exists then ask to user it should be used or not
+            if (Cache.DataCache.machines != null && Cache.DataCache.machines.Count > 0)
+            {
+                DialogResult dlgResult = UI.UIService.openAskDialog("", "Romset information was already generated. Do you want to use existing data? If no, data will be regenerated");
+                if (dlgResult == DialogResult.Cancel)
                 {
-                    machineType = MachineType.MAME;
+                    return null;
                 }
-
-                // Case of DAT
-                else
+                if (dlgResult == DialogResult.Yes)
                 {
-                    machineType =  getMachineTypeFromString(MAMEUtilityPlugin.settings.Settings.SelectedSourceFileListType);
+                    return Cache.DataCache.machines;
                 }
-
-                // get machines
-                responseData = getMachines(machineType);
-
-                // store to cache
-                if(responseData.machines != null)
-                    Cache.DataCache.mameMachines = responseData.machines;
-
-                return responseData;
             }
 
-            // Case of cached data: Ask to user if wants to use cached data or regenerate MAME machines
-            DialogResult dlgResult = UI.UIService.openAskDialog("", "Romset machines was previously generated. Do you want to use cached data? If no, then a rescan will be launched");
-            if (dlgResult == DialogResult.Cancel)
-            {
-                responseData.isOperationCancelled = true;
-                return responseData;
-            }
-            if (dlgResult == DialogResult.Yes)
-            {
-                responseData.machines = Cache.DataCache.mameMachines;
-                return responseData;
-            }
+            // Otherwise generate machines
+            Dictionary<string, RomsetMachine> machines = generateMachines(sourceFormat);
 
-            // Regenerate machines
-            responseData = getMachines(machineType);
-            
-            // store to cache
-            if (responseData.machines != null)
-                Cache.DataCache.mameMachines = responseData.machines;
+            // Update Cache
+            Cache.DataCache.machines = machines;
 
-            return responseData;
+            return machines;
         }
 
         //////////////////////////////////
-        private static MachinesResponseData getMachines(MachineType machineType)
+        private static Dictionary<string, RomsetMachine> generateMachines(SourceFormat sourceFormat)
         {
-            MachinesResponseData responseData;
+            Dictionary<string, RomsetMachine> machines;
 
             // Get machines by machine type
-            if (machineType == MachineType.MAME) responseData = MAMEMachinesService.getMachines();
-            else if (machineType == MachineType.FBNeo) responseData = FBNeoMachinesService.getMachines();
+            if (sourceFormat == SourceFormat.MAME) machines = MAMEMachinesService.getMachines();
+            else if (sourceFormat == SourceFormat.FBNeo) machines = FBNeoMachinesService.getMachines();
             else return null;
 
             // sanity check
-            if (responseData.machines == null) return responseData;
+            if (machines == null) return null;
 
             // Link parent/clones
-            linkParentClones(responseData.machines);
+            linkParentClones(machines);
 
-            return responseData;
+            return machines;
         }
 
         //////////////////////////////////////////////////////

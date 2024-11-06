@@ -38,6 +38,7 @@ namespace MAMEUtility.Models
         {
             if (string.IsNullOrEmpty(sampleof)) return false;
             if (romName == sampleof)            return false;
+            if (isClone()) return false;
             return true;
         }
     }

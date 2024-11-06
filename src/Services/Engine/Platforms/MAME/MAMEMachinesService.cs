@@ -13,11 +13,9 @@ namespace MAMEUtility.Services.Engine.MAME
     class MAMEMachinesService
     {
         ////////////////////////////////////////////////////////////////////////////////
-        public static MachinesResponseData getMachines()
+        public static Dictionary<string, RomsetMachine> getMachines()
         {
-            MachinesResponseData responseData = new MachinesResponseData();
-            responseData.machines = generateMachines();
-            return responseData;
+            return generateMachines();
         }
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -40,7 +38,7 @@ namespace MAMEUtility.Services.Engine.MAME
         {
             if (string.IsNullOrEmpty(mameExecutablePath))
             {
-                MAMEUtilityPlugin.playniteAPI.Dialogs.ShowErrorMessage("Missing MAME executable", "You are using MAME executable as source but you have not set the MAME executable path from extension settings");
+                MAMEUtilityPlugin.playniteAPI.Dialogs.ShowErrorMessage("You are using MAME executable as source but you have not set the MAME executable path from extension settings", "Missing MAME executable");
                 return null;
             }
 

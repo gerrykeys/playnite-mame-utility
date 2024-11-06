@@ -12,15 +12,13 @@ namespace MAMEUtility.Services.Engine.Platforms.FBNeo
     class FBNeoMachinesService
     {
         ////////////////////////////////////////////////////////////////////////////////
-        public static MachinesResponseData getMachines()
+        public static Dictionary<string, RomsetMachine> getMachines()
         {
-            MachinesResponseData responseData = new MachinesResponseData();
-            responseData.machines = getMachinesFromMameListFile(MAMEUtilityPlugin.settings.Settings.SourceListFilePath);
-            return responseData;
+            return getMachinesFromListFile(MAMEUtilityPlugin.settings.Settings.SourceListFilePath);
         }
 
         ////////////////////////////////////////////////////////////////////////////////
-        private static Dictionary<string, RomsetMachine> getMachinesFromMameListFile(string mameListFilePath)
+        private static Dictionary<string, RomsetMachine> getMachinesFromListFile(string mameListFilePath)
         {
             if (string.IsNullOrEmpty(mameListFilePath))
             {

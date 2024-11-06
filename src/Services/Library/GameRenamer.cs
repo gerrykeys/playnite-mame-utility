@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace MAMEUtility.Services.Engine
 {
@@ -20,10 +21,9 @@ namespace MAMEUtility.Services.Engine
         public static void renameSelectedGames(Boolean extraInfo)
         {
             // Get machines
-            MachinesResponseData responseData = MachinesService.getMachines();
-            if (responseData.isOperationCancelled) return;
-            if (responseData.machines == null) {
-                UI.UIService.showError("No machine founds", "Cannot get Machines. Please check extension settings.");
+            Dictionary<string, RomsetMachine> machines = MachinesService.getMachines();
+            if (machines == null) {
+                UI.UIService.showError("No machine found", "Cannot get Machines. Please check plugin settings.");
                 return;
             }
 
@@ -38,7 +38,11 @@ namespace MAMEUtility.Services.Engine
                 // Rename machines
                 foreach (Game game in selectedGames)
                 {
-                    RomsetMachine mameMachine = MachinesService.findMachineByPlayniteGame(responseData.machines, game);
+                    RomsetMachine mameMachine = MachinesService.findMachineByPlayniteGame(machines, game);
+                    if(mameMachine.romName == "buckrogn")
+                    {
+                        int a = 0;
+                    }     
                     if (mameMachine != null && mameMachine.isGame())
                     {
                         renameGame(game, mameMachine, extraInfo);

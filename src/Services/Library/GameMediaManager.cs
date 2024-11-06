@@ -98,11 +98,10 @@ namespace MAMEUtility.Services.Engine
         public static void setExtraMetaDataOfSelectedGames(ExtraMetaDataType mediaType)
         {
             // Get machines
-            MachinesResponseData responseData = MachinesService.getMachines();
-            if (responseData.isOperationCancelled) return;
-            if (responseData.machines == null)
+            Dictionary<string, RomsetMachine> machines = MachinesService.getMachines();
+            if (machines == null)
             {
-                UI.UIService.showError("No machine founds", "Cannot get Machines. Please check extension settings.");
+                UI.UIService.showError("No machine found", "Cannot get Machines. Please check plugin settings.");
                 return;
             }
 
@@ -148,11 +147,10 @@ namespace MAMEUtility.Services.Engine
         public static void setImageOfSelectedGames(ImageType imageType)
         {
             // Get machines
-            MachinesResponseData responseData = MachinesService.getMachines();
-            if (responseData.isOperationCancelled) return;
-            if (responseData.machines == null)
+            Dictionary<string, RomsetMachine> machines = MachinesService.getMachines();
+            if (machines == null)
             {
-                UI.UIService.showError("No machine founds", "Cannot get Machines. Please check extension settings.");
+                UI.UIService.showError("No machine found", "Cannot get Machines. Please check plugin settings.");
                 return;
             }
 
@@ -227,7 +225,7 @@ namespace MAMEUtility.Services.Engine
         private static string findImageInCorrelated(string machineName)
         {
             // get the romset machine
-            RomsetMachine machine = Cache.DataCache.mameMachines[machineName];
+            RomsetMachine machine = Cache.DataCache.machines[machineName];
 
             // if machine is not a game then skip
             if (!machine.isGame())
@@ -244,7 +242,7 @@ namespace MAMEUtility.Services.Engine
             else
             {
                 // add its parent
-                RomsetMachine parentMachine = Cache.DataCache.mameMachines[machine.cloneOf];
+                RomsetMachine parentMachine = Cache.DataCache.machines[machine.cloneOf];
                 correlatedNames.Add(parentMachine.romName);
                 foreach (string clone in parentMachine.clones)
                 {

@@ -14,7 +14,7 @@ namespace MAMEUtility
         ////////////////////////////////
         public MAMEUtilitySettings()
         {
-            SourceFileListTypes = new[] { "MAME", "FBNeo" };
+            RomsetSourceFormat = new[] { "MAME", "FBNeo" };
         }
 
         //////////////////////////////////////////
@@ -60,16 +60,16 @@ namespace MAMEUtility
         }
 
         //////////////////////////////////////////
-        //// Source List File Type
+        //// Romset Source Format
         //////////////////////////////////////////
-        public IEnumerable<string> SourceFileListTypes { get; private set; }
-        private string _selectedSourceFileListType;
-        public string SelectedSourceFileListType
+        public IEnumerable<string> RomsetSourceFormat { get; private set; }
+        private string _selectedRomsetSourceFormat;
+        public string SelectedRomsetSourceFormat
         {
-            get => !string.IsNullOrEmpty(_selectedSourceFileListType) ? _selectedSourceFileListType : "MAME";
+            get => !string.IsNullOrEmpty(_selectedRomsetSourceFormat) ? _selectedRomsetSourceFormat : "MAME";
             set
             {
-                _selectedSourceFileListType = value;
+                _selectedRomsetSourceFormat = value;
                 OnPropertyChanged();
             }
         }

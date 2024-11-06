@@ -9,10 +9,10 @@
     <StackPanel Orientation="Vertical">
 
 
-        <GroupBox Header="MAME romset information source" Margin="15">
+        <GroupBox Header="MAME Utility Settings" Margin="15">
 
             <StackPanel Margin="10">
-                <Label FontWeight="Bold">Select MAME romset information type source</Label>
+                <Label FontWeight="Bold">Select romset data source</Label>
                 <RadioButton 
                     x:Name="RadioButton_UseMameExecutable"
                     Margin="5" 
@@ -45,8 +45,8 @@
                         Margin="0 10 0 0"
                         IsEnabled="{Binding ElementName=RadioButton_UseSourceListFile, Path=IsChecked}">
                     <ComboBox
-                        ItemsSource="{Binding Path=Settings.SourceFileListTypes}"
-                        SelectedItem="{Binding Path=Settings.SelectedSourceFileListType}"
+                        ItemsSource="{Binding Path=Settings.RomsetSourceFormat}"
+                        SelectedItem="{Binding Path=Settings.SelectedRomsetSourceFormat}"
                         />
                     <TextBox
                             x:Name="GamelistXML_TextBox"

@@ -14,12 +14,11 @@ namespace MAMEUtility.Services.Engine
         public static void removeSelectedNonGames()
         {
             // Get machines
-            string sourceListFileType = MAMEUtilityPlugin.settings.Settings.SelectedSourceFileListType;
-            MachinesResponseData responseData = MachinesService.getMachines();
-            if (responseData.isOperationCancelled) return;
-            if (responseData.machines == null)
+            string sourceListFileType = MAMEUtilityPlugin.settings.Settings.SelectedRomsetSourceFormat;
+            Dictionary<string, RomsetMachine> machines = MachinesService.getMachines();
+            if (machines == null)
             {
-                UI.UIService.showError("No machine founds", "Cannot get Machines. Please check extension settings.");
+                UI.UIService.showError("No machines found", "Cannot get Machines. Please check plugin settings.");
                 return;
             }
 
@@ -31,7 +30,7 @@ namespace MAMEUtility.Services.Engine
                 IEnumerable<Game> selectedGames = MAMEUtilityPlugin.playniteAPI.MainView.SelectedGames;
                 foreach (Game game in selectedGames)
                 {
-                    RomsetMachine mameMachine = MachinesService.findMachineByPlayniteGame(responseData.machines, game);
+                    RomsetMachine mameMachine = MachinesService.findMachineByPlayniteGame(machines, game);
                     if(mameMachine != null && !mameMachine.isGame())
                     {
                         removeGame(game);
@@ -49,12 +48,11 @@ namespace MAMEUtility.Services.Engine
         public static void removeSelectedCloneGames()
         {
             // Get machines
-            string sourceListFileType = MAMEUtilityPlugin.settings.Settings.SelectedSourceFileListType;
-            MachinesResponseData responseData = MachinesService.getMachines();
-            if (responseData.isOperationCancelled) return;
-            if (responseData.machines == null)
+            string sourceListFileType = MAMEUtilityPlugin.settings.Settings.SelectedRomsetSourceFormat;
+            Dictionary<string, RomsetMachine> machines = MachinesService.getMachines();
+            if (machines == null)
             {
-                UI.UIService.showError("No machine founds", "Cannot get Machines. Please check extension settings.");
+                UI.UIService.showError("No machines found", "Cannot get Machines. Please check plugin settings.");
                 return;
             }
 
@@ -66,7 +64,7 @@ namespace MAMEUtility.Services.Engine
                 IEnumerable<Game> selectedGames = MAMEUtilityPlugin.playniteAPI.MainView.SelectedGames;
                 foreach (Game game in selectedGames)
                 {
-                    RomsetMachine mameMachine = MachinesService.findMachineByPlayniteGame(responseData.machines, game);
+                    RomsetMachine mameMachine = MachinesService.findMachineByPlayniteGame(machines, game);
                     if (mameMachine != null && mameMachine.isClone())
                     {
                         removeGame(game);
@@ -83,12 +81,11 @@ namespace MAMEUtility.Services.Engine
         public static void removeSelectedMechanicalGames()
         {
             // Get machines
-            string sourceListFileType = MAMEUtilityPlugin.settings.Settings.SelectedSourceFileListType;
-            MachinesResponseData responseData = MachinesService.getMachines();
-            if (responseData.isOperationCancelled) return;
-            if (responseData.machines == null)
+            string sourceListFileType = MAMEUtilityPlugin.settings.Settings.SelectedRomsetSourceFormat;
+            Dictionary<string, RomsetMachine> machines = MachinesService.getMachines();
+            if (machines == null)
             {
-                UI.UIService.showError("No machine founds", "Cannot get Machines. Please check extension settings.");
+                UI.UIService.showError("No machine found", "Cannot get Machines. Please check plugin settings.");
                 return;
             }
 
@@ -100,7 +97,7 @@ namespace MAMEUtility.Services.Engine
                 IEnumerable<Game> selectedGames = MAMEUtilityPlugin.playniteAPI.MainView.SelectedGames;
                 foreach (Game game in selectedGames)
                 {
-                    RomsetMachine mameMachine = MachinesService.findMachineByPlayniteGame(responseData.machines, game);
+                    RomsetMachine mameMachine = MachinesService.findMachineByPlayniteGame(machines, game);
                     if (mameMachine != null && mameMachine.isMechanical)
                     {
                         removeGame(game);
