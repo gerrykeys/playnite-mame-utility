@@ -110,6 +110,7 @@ namespace MAMEUtility.Services.Engine
 
             // Apply images for all selected Playnite games
             int imagesApplied = 0;
+            int selectedGamesCount = 0;
             GlobalProgressResult progressResult = UI.UIService.showProgress("Applying extrametadata videos to selection", false, true, (progressAction) => {
 
                 // Get selected games
@@ -129,6 +130,13 @@ namespace MAMEUtility.Services.Engine
                     }
                 }
             });
+
+            if (selectedGamesCount == 0)
+            {
+                UI.UIService.showMessage("No games selected. Please select games.");
+                return;
+            }
+
             switch (mediaType)
             {
                 case ExtraMetaDataType.Logo:

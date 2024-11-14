@@ -8,6 +8,7 @@ using Playnite.SDK.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -30,10 +31,14 @@ namespace MAMEUtility.Services.Engine
             // Rename all selected Playnite games
             int processedCount = 0;
             int renamedCount   = 0;
+            int selectedGamesCount = 0;
             GlobalProgressResult progressResult = UI.UIService.showProgress("Renaming selection", false, true, (progressAction) => {
 
                 // Get selected games
                 IEnumerable<Game> selectedGames = MAMEUtilityPlugin.playniteAPI.MainView.SelectedGames;
+
+                // Get selected games count
+                selectedGamesCount = selectedGames.Count();
 
                 // Rename machines
                 foreach (Game game in selectedGames)
@@ -52,6 +57,12 @@ namespace MAMEUtility.Services.Engine
                     processedCount++;
                 }
             });
+
+            if(selectedGamesCount == 0)
+            {
+                UI.UIService.showMessage("No games selected. Please select games.");
+                return;
+            }
 
             // Show result message
             UI.UIService.showMessage(renamedCount + " Games were renamed");

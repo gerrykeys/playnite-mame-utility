@@ -18,7 +18,7 @@ namespace MAMEUtility.Models
         ////////////////////////////////////////////////////////////
         public bool isGame()
         {
-            return (isBios || isDevice || isSample()) ? false : true;
+            return (isBios || isDevice) ? false : true;
         }
 
         ////////////////////////////////////////////////////////////
@@ -37,8 +37,6 @@ namespace MAMEUtility.Models
         public bool isSample()
         {
             if (string.IsNullOrEmpty(sampleof)) return false;
-            if (romName == sampleof)            return false;
-            if (isClone()) return false;
             return true;
         }
     }

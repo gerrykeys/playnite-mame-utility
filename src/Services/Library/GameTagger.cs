@@ -39,6 +39,7 @@ namespace MAMEUtility.Services.Engine.Library
 
             // Tag selected Playnite games
             int taggedCount = 0;
+            int selectedGamesCount = 0;
             GlobalProgressResult progressResult = UI.UIService.showProgress("Tagging selection", false, true, (progressAction) => {
 
                 // Get selected games
@@ -55,6 +56,12 @@ namespace MAMEUtility.Services.Engine.Library
                     }
                 }
             });
+
+            if (selectedGamesCount == 0)
+            {
+                UI.UIService.showMessage("No games selected. Please select games.");
+                return;
+            }
 
             // Show result message
             UI.UIService.showMessage(taggedCount + " Games were tagged");
