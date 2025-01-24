@@ -11,7 +11,7 @@ namespace MAMEUtility
     public class MAMEUtilityPlugin : GenericPlugin
     {
         public override Guid Id { get; } = Guid.Parse("af854071-4cd2-47ae-a7b3-35c238f0f7c0");
-        private static readonly ILogger logger = LogManager.GetLogger();
+        public static readonly ILogger logger = LogManager.GetLogger();
 
         //////////////////////////////////////////////////////////////////////////////////////
         public static string PluginName = "MAME Utility";
