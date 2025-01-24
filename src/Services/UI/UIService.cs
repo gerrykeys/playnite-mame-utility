@@ -14,10 +14,6 @@ namespace MAMEUtility.Services.UI
 {
     class UIService
     {
-        //UI.UIService.showSelectedGamesProgress("", (game, machines, progressArgs) =>
-        //    {
-
-        //    });
         /// <summary>
         /// Activates a progress dialog for the currently selected games and processed each game with the given handler.
         /// </summary>
