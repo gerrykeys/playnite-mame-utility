@@ -7,4 +7,3 @@ test/
 *.vsidx
 *.suo
 Playnite/
-src/packages/*
