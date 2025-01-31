@@ -11,115 +11,71 @@ namespace MAMEUtility.Services.Engine
 {
     class GameCleaner
     {
-        //////////////////////////////////////////////////
+        /// <summary>
+        /// Removes games from selection that are not playable like bios/device/sample.
+        /// </summary>
         public static void removeSelectedNonGames()
         {
-            // Get machines
-            string sourceListFileType = MAMEUtilityPlugin.settings.Settings.SelectedRomsetSourceFormat;
-            Dictionary<string, RomsetMachine> machines = MachinesService.getMachines();
-            if (machines == null)
-            {
-                UI.UIService.showError("No machines found", "Cannot get Machines. Please check plugin settings.");
-                return;
-            }
-
-            // Remove selected non-Game
             int nonGamesRemoved = 0;
-            int selectedGamesCount = 0;
-            GlobalProgressResult progressResult = UI.UIService.showProgress("Removing non-Games (bios/device/sample) from selection", false, true, (progressAction) => {
-                
-                // Get selected games
-                IEnumerable<Game> selectedGames = MAMEUtilityPlugin.playniteAPI.MainView.SelectedGames;
-                selectedGamesCount = selectedGames.Count();
-                foreach (Game game in selectedGames)
+            UI.UIService.showSelectedGamesProgress("Removing non-games (bios/device/sample) from selection", (game, machines, progressArgs) =>
+            {
+                RomsetMachine mameMachine = MachinesService.findMachineByPlayniteGame(machines, game);
+                if (mameMachine != null && !mameMachine.isGame())
                 {
-                    RomsetMachine mameMachine = MachinesService.findMachineByPlayniteGame(machines, game);
-                    if(mameMachine != null && !mameMachine.isGame())
-                    {
-                        removeGame(game);
-                        nonGamesRemoved++;
-                    }
+                    removeGame(game);
+                    nonGamesRemoved++;
                 }
             });
 
-            if (selectedGamesCount == 0)
-            {
-                UI.UIService.showMessage("No games selected. Please select games.");
-                return;
-            }
-
             // Show result message
-            UI.UIService.showMessage(nonGamesRemoved + " non-Games were removed from library");
+            UI.UIService.showMessage($"{nonGamesRemoved} non-games were removed from library.");
         }
 
 
-        //////////////////////////////////////////////////
+        /// <summary>
+        /// Removes games from selection that are clones.
+        /// </summary>
         public static void removeSelectedCloneGames()
         {
-            // Get machines
-            string sourceListFileType = MAMEUtilityPlugin.settings.Settings.SelectedRomsetSourceFormat;
-            Dictionary<string, RomsetMachine> machines = MachinesService.getMachines();
-            if (machines == null)
+            int cloneGamesRemoved = 0;
+            UI.UIService.showSelectedGamesProgress("Removing clone games from selection", (game, machines, progressArgs) =>
             {
-                UI.UIService.showError("No machines found", "Cannot get Machines. Please check plugin settings.");
-                return;
-            }
-
-            // Remove selected clone games
-            int cloneGames = 0;
-            GlobalProgressResult progressResult = UI.UIService.showProgress("Removing clone Games from selection", false, true, (progressAction) => {
-
-                // Get selected games
-                IEnumerable<Game> selectedGames = MAMEUtilityPlugin.playniteAPI.MainView.SelectedGames;
-                foreach (Game game in selectedGames)
+                RomsetMachine mameMachine = MachinesService.findMachineByPlayniteGame(machines, game);
+                if (mameMachine != null && mameMachine.isClone())
                 {
-                    RomsetMachine mameMachine = MachinesService.findMachineByPlayniteGame(machines, game);
-                    if (mameMachine != null && mameMachine.isClone())
-                    {
-                        removeGame(game);
-                        cloneGames++;
-                    }
+                    removeGame(game);
+                    cloneGamesRemoved++;
                 }
             });
 
             // Show result message
-            UI.UIService.showMessage(cloneGames + " Clone Games were removed from library");
+            UI.UIService.showMessage($"{cloneGamesRemoved} clone games were removed from library.");
         }
 
-        //////////////////////////////////////////////////
+        /// <summary>
+        /// Removes games from selection that are mechanical.
+        /// </summary>
         public static void removeSelectedMechanicalGames()
         {
-            // Get machines
-            string sourceListFileType = MAMEUtilityPlugin.settings.Settings.SelectedRomsetSourceFormat;
-            Dictionary<string, RomsetMachine> machines = MachinesService.getMachines();
-            if (machines == null)
+            int mechanicalGamesRemoved = 0;
+            UI.UIService.showSelectedGamesProgress("Removing mechanical games from selection", (game, machines, progressArgs) =>
             {
-                UI.UIService.showError("No machine found", "Cannot get Machines. Please check plugin settings.");
-                return;
-            }
-
-            // Remove mechanical games from selection
-            int mechanicalGames = 0;
-            GlobalProgressResult progressResult = UI.UIService.showProgress("Removing mechanical Games from selection", false, true, (progressAction) => {
-
-                // Get selected games
-                IEnumerable<Game> selectedGames = MAMEUtilityPlugin.playniteAPI.MainView.SelectedGames;
-                foreach (Game game in selectedGames)
+                RomsetMachine mameMachine = MachinesService.findMachineByPlayniteGame(machines, game);
+                if (mameMachine != null && mameMachine.isMechanical)
                 {
-                    RomsetMachine mameMachine = MachinesService.findMachineByPlayniteGame(machines, game);
-                    if (mameMachine != null && mameMachine.isMechanical)
-                    {
-                        removeGame(game);
-                        mechanicalGames++;
-                    }
+                    removeGame(game);
+                    mechanicalGamesRemoved++;
                 }
             });
 
             // Show result message
-            UI.UIService.showMessage(mechanicalGames + " Mechanical Games were removed from library");
+            UI.UIService.showMessage($"{mechanicalGamesRemoved} mechanical games were removed from library.");
         }
 
-        //////////////////////////////////////////////////
+        /// <summary>
+        /// Removes the given game from the Playnite games database.
+        /// </summary>
+        /// <param name="playniteGame">Game to remove</param>
         private static void removeGame(Game playniteGame)
         {
             MAMEUtilityPlugin.playniteAPI.Database.Games.Remove(playniteGame.Id);

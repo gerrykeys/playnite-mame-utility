@@ -117,9 +117,12 @@ namespace MAMEUtility.Services.Engine.Platforms
             if (mameMachines.ContainsKey(playniteGame.Name))
                 return mameMachines[playniteGame.Name];
 
-            if (playniteGame.Roms.Count == 1)
+            if (playniteGame.Roms == null || playniteGame.Roms.Count == 0)
+                return null;
+
+            foreach (var rom in playniteGame.Roms)
             {
-                string path = playniteGame.Roms[0].Path;
+                string path = rom.Path;
                 string nameCleaned = path.Substring(path.LastIndexOf("\\") + 1);
 
                 nameCleaned = extensionCleaner.Replace(nameCleaned, "");
@@ -137,10 +140,10 @@ namespace MAMEUtility.Services.Engine.Platforms
             foreach (KeyValuePair<string, RomsetMachine> entry in machinesMap)
             {
                 RomsetMachine machine = entry.Value;
-                if(machine.isClone())
+                if (machine.isClone())
                 {
                     string parent = machine.cloneOf;
-                    string clone  = entry.Key;
+                    string clone = entry.Key;
                     machinesMap[parent].clones.AddMissing<string>(clone);
                 }
             }
