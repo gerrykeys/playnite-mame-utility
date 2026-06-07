@@ -16,6 +16,11 @@ namespace MAMEUtility.Services.Engine
             Dictionary<string, RomsetMachine> mameGameMachines = new Dictionary<string, RomsetMachine>();
 
             XmlNodeList machineNodeList = gamelistXML.GetElementsByTagName("machine");
+            if (machineNodeList.Count == 0)
+            {
+                machineNodeList = gamelistXML.GetElementsByTagName("game");
+            }
+
             foreach (XmlNode machineNode in machineNodeList)
             {
                 // Get MAME machine
