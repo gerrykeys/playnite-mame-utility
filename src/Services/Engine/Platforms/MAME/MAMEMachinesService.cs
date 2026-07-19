@@ -26,7 +26,7 @@ namespace MAMEUtility.Services.Engine.MAME
                 var settings = MAMEUtilityPlugin.settings.Settings;
                 return (settings.UseMameExecutable) ? getMachinesFromMameExecutable(settings.MameExecutableFilePath) :  getMachinesFromMameListFile(settings.SourceListFilePath);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
 
