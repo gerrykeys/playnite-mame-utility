@@ -46,6 +46,7 @@ namespace MAMEUtility.Services.Engine
             if (machineXmlNode.FirstChild                 != null) machine.description  = machineXmlNode.FirstChild.InnerText;
             if (machineXmlNode.Attributes["cloneof"]      != null) machine.cloneOf      = machineXmlNode.Attributes["cloneof"].Value;
             if (machineXmlNode.Attributes["sampleof"]     != null) machine.sampleof     = machineXmlNode.Attributes["sampleof"].Value;
+            if (machineXmlNode.Attributes["sourcefile"]    != null) machine.sourceDriver = machineXmlNode.Attributes["sourcefile"].Value;
             if (machineXmlNode.Attributes["isbios"]       != null) machine.isBios       = getBoolFromYesNo(machineXmlNode.Attributes["isbios"].Value);
             if (machineXmlNode.Attributes["isdevice"]     != null) machine.isDevice     = getBoolFromYesNo(machineXmlNode.Attributes["isdevice"].Value);
             if (machineXmlNode.Attributes["ismechanical"] != null) machine.isMechanical = getBoolFromYesNo(machineXmlNode.Attributes["ismechanical"].Value);

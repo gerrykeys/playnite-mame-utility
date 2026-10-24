@@ -1,4 +1,4 @@
-# Playnite - MAME Utility Extension
+﻿# Playnite - MAME Utility Extension
 
 ![Alt text](assets/logo/mame-utility-extension-banner.png?raw=true "Banner")
 
@@ -15,7 +15,7 @@ If you like the extension and it has been useful to you, you can buy me a beer :
 - Remove from library all non-games (*bios/device/sample roms*)
 - Remove from library all clone games
 - Remove from library all mechanical games
-- Tag your games by following tags: *Parent, Clone, Bios, Device, Sample, Mechanical*
+- Tag your games by following tags: *Parent, Clone, Bios, Device, Sample, Mechanical, Source Driver: <sourcefile>*
 - Add Cover / Screenshot / Icons images
 
 > **_NOTE:_**  The extension does not modify or remove in any way your original imported roms. 
@@ -104,3 +104,16 @@ Games without tag                                                   | Games with
 ## License
 
 MIT
+
+
+## Source Driver tag (added in 1.1.0)
+
+When using **Cataloguer > Tag selected games**, MAME Utility now reads the `sourcefile`
+attribute from the MAME XML and adds a Playnite tag in this format:
+
+`Source Driver: cps2.cpp`
+
+The source-driver tag is refreshed when tagging the game again. Existing unrelated tags
+and the existing Parent/Clone/Bios/Device/Sample/Mechanical tags are preserved. The
+`sourcefile` attribute is specific to MAME; FBNeo entries without this attribute do not
+receive a Source Driver tag.

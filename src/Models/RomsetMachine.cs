@@ -9,6 +9,7 @@ namespace MAMEUtility.Models
         public string description;
         public string cloneOf;
         public string sampleof;
+        public string sourceDriver;
         public bool isBios;
         public bool isDevice;
         public bool isMechanical;

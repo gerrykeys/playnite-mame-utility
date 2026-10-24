@@ -23,6 +23,7 @@ namespace MAMEUtility.Services.Engine.Library
             public static string Mechanical = "Mechanical";
             public static string Parent = "Parent";
             public static string Clone = "Clone";
+            public static string SourceDriverPrefix = "Source Driver: ";
         }
 
         ////////////////////////////////////////////////////////////////////
@@ -55,6 +56,21 @@ namespace MAMEUtility.Services.Engine.Library
             if (mameMachine.isMechanical) tagsToSet.Add(Tags.Mechanical);
             if (mameMachine.isGame() && !mameMachine.isClone()) tagsToSet.Add(Tags.Parent);
             if (mameMachine.isClone()) tagsToSet.Add(Tags.Clone);
+            if (!string.IsNullOrWhiteSpace(mameMachine.sourceDriver))
+                tagsToSet.Add(Tags.SourceDriverPrefix + mameMachine.sourceDriver.Trim());
+
+            // Keep source-driver metadata current if the same game is tagged again.
+            // Only remove tags created by this feature; preserve all unrelated tags.
+            Guid[] oldSourceDriverTagIds = MAMEUtilityPlugin.playniteAPI.Database.Tags
+                .Where(tag => tag.Name.StartsWith(Tags.SourceDriverPrefix, StringComparison.OrdinalIgnoreCase))
+                .Select(tag => tag.Id)
+                .ToArray();
+
+            if (playniteGame.TagIds == null)
+                playniteGame.TagIds = new List<Guid>();
+
+            if (!string.IsNullOrWhiteSpace(mameMachine.sourceDriver))
+                playniteGame.TagIds.RemoveAll(id => oldSourceDriverTagIds.Contains(id));
 
             if (tagsToSet.Count == 0) return;
 
