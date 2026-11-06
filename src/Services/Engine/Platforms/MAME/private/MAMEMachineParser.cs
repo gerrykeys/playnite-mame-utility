@@ -43,6 +43,7 @@ namespace MAMEUtility.Services.Engine
             RomsetMachine machine = new RomsetMachine();
 
             if (machineXmlNode.Attributes["name"]         != null) machine.romName      = machineXmlNode.Attributes["name"].Value;
+            if (machineXmlNode.Attributes["sourcefile"]  != null) machine.sourceFile  = machineXmlNode.Attributes["sourcefile"].Value;
             if (machineXmlNode.FirstChild                 != null) machine.description  = machineXmlNode.FirstChild.InnerText;
             if (machineXmlNode.Attributes["cloneof"]      != null) machine.cloneOf      = machineXmlNode.Attributes["cloneof"].Value;
             if (machineXmlNode.Attributes["sampleof"]     != null) machine.sampleof     = machineXmlNode.Attributes["sampleof"].Value;
