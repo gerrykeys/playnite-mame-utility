@@ -68,6 +68,18 @@ namespace MAMEUtility.Configuration
                 },
                 new MainMenuItem
                 {
+                    MenuSection = "@" + MAMEUtilityPlugin.PluginName + "|Cataloguer",
+                    Description = "Assign ROM sources",
+                    Action = (args) => GameSourceManager.assignSourceOfSelectedGames()
+                },
+                new MainMenuItem
+                {
+                    MenuSection = "@" + MAMEUtilityPlugin.PluginName + "|Cataloguer",
+                    Description = "Remove all MAME Utility tags and sources",
+                    Action = (args) => GameSourceManager.removePluginTagsAndSources()
+                },
+                new MainMenuItem
+                {
                     MenuSection = "@" + MAMEUtilityPlugin.PluginName + "|Cleaner",
                     Description = "Remove non-Games from selection",
                     Action = (args) => GameCleaner.removeSelectedNonGames()

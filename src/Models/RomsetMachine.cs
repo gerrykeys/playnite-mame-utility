@@ -7,6 +7,7 @@ namespace MAMEUtility.Models
     {
         public string romName;
         public string description;
+        public string sourceFile;
         public string cloneOf;
         public string sampleof;
         public bool isBios;

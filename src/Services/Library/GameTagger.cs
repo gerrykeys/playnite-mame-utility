@@ -70,6 +70,18 @@ namespace MAMEUtility.Services.Engine.Library
         }
 
         //////////////////////////////////////////////////
+        internal static Guid getTagIdForCleanup(string tagName)
+        {
+            foreach (Tag playniteTag in MAMEUtilityPlugin.playniteAPI.Database.Tags)
+            {
+                if (playniteTag.Name == tagName)
+                    return playniteTag.Id;
+            }
+
+            return Guid.Empty;
+        }
+
+        //////////////////////////////////////////////////
         private static Guid getTagId(string tagName)
         {
             Guid tagId = Guid.Empty;

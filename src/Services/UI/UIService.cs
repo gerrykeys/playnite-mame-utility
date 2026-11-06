@@ -1,8 +1,7 @@
-﻿using MAMEUtility.Models;
+using MAMEUtility.Models;
 using MAMEUtility.Services.Engine.Platforms;
 using Playnite.SDK;
 using Playnite.SDK.Models;
-using Humanizer;
 using System.Collections.Generic;
 using System.Linq;
 using System;
@@ -67,7 +66,7 @@ namespace MAMEUtility.Services.UI
                             var averageLoopMS = elapsedTime.TotalMilliseconds / progressArgs.CurrentProgressValue;
                             var remainingLoops = (progressArgs.ProgressMaxValue - progressArgs.CurrentProgressValue);
                             var eta = TimeSpan.FromMilliseconds(averageLoopMS * remainingLoops);
-                            progressArgs.Text = $"{text} ({progressArgs.CurrentProgressValue}/{progressArgs.ProgressMaxValue}) \nETA: {eta.Humanize(4)}";
+                            progressArgs.Text = $"{text} ({progressArgs.CurrentProgressValue}/{progressArgs.ProgressMaxValue}) \nETA: {eta.ToString(@"hh\:mm\:ss")}";
                         }
 
                         // Process this single game and time how long it takes to process
